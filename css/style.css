@@ -8,49 +8,35 @@ body, html {
 	background: #ddd;
 }
 .nav {
-	width: 130px;
-	height: 48px;
-	display: block;
+	width: 1024px;
+	height: 35px;
+	font-size: 16px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 3px 2px 3px #333333;
+	background-color: #8AD9FF;
+	border-radius: 8px;
 	margin-left: auto;
 	margin-right: auto;
-	background: #c99;
-	position: absolute;
 }
-.nav li a:link, .nav li a:visited {
-	position: absolute;
-	top: 0;
-	height: 48px;
-	text-indent: -9000px;
-	overflow: hidden;
+.nav ul {
+	height: auto;
+	padding: 8px 0px;
+	margin: 0px;
 }
-.nav .home a:link, .nav .home a:visited {
-	left: 23px;
-	width: 76px;
+.nav li {
+	display: inline;
+	padding: 20px;
 }
-.nav .home a:hover, .nav .home a:focus {
-	background: url(../i/blue-nav.gif) no-repeat -23px -49px;
+.nav a {
+	text-decoration: none;
+	color: #00F;
+	padding: 8px 8px 8px 8px;
 }
-.nav .home a:active {
-	background: url(../i/blue-nav.gif) no-repeat -23px -98px;
-}
-.nav-home {
-	position: absolute;
-	top: 0;
-	left: 23px;
-	width: 76px;
-	height: 48px;
-	background: url(../i/blue-nav.gif) no-repeat -23px -49px;
-}
-.nav-home, .nav-home-click {
-	position: absolute;
-	top: 0;
-	left: 23px;
-	width: 76px;
-	height: 48px;
-	background: url(../i/blue-nav.gif) no-repeat -23px -49px;
-}
-.nav-home-click {
-	background: url(../i/blue-nav.gif) no-repeat -23px -98px;
+.nav a:hover {
+	color: #F90;
+	background-color: #FFF;
 }
 #wrapper {
 	width: 1024px;

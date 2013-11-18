@@ -1,23 +1,23 @@
 <div id="wrapper-top">
 	<div id="wrapper-top-left">
 		<h1>Editor's pick</h1>
-			<ul><?php foreach($model['recommended'] as $item) { ?>
-				<li><?php echo $item -> title; ?></li>
+			<ul><?php foreach($viewBag['recommended'] as $item) { ?>
+				<li><b><?php echo $item -> title; ?></b><br /><?php echo $item -> getSummary(); ?></li>
 					<?php } ?>
 			</ul>
 	</div>
 	<div id="wrapper-top-right">
 		<h1>Popular</h1>
-			<ul><?php foreach($model['popular'] as $item) { ?>
-				<li><?php echo $item -> title; ?></li>
+			<ul><?php foreach($viewBag['popular'] as $item) { ?>
+				<li><b><?php echo $item -> title; ?></b><br /><?php echo $item -> getSummary(); ?></li>
 					<?php } ?>
 			</ul>
 	</div>
 	</div>
 <div id="wrapper-bottom">
 	<h1>Fresh stuff</h1>
-		<ul><?php foreach($model['newest'] as $item) { ?>
-			<li><?php echo $item -> title; ?></li>
+	<ul><?php foreach($viewBag['newest'] as $item) { ?>
+			<li><b><?php echo $item -> title; ?></b><br /><?php echo $item -> getSummary(); ?></li>
 				<?php } ?>
 		</ul>
 </div>

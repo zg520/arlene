@@ -15,9 +15,9 @@ abstract class Controller {
 		$this -> {$this->action}();
 	}
 
-	protected function renderView($model, $isPartial = false) {
+	protected function renderView($viewBag, $isPartial = false) {
 		$controllerName = get_class($this);
-		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName). DS . $this->action . '.php';
+		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
 		if ($isPartial) {
 			require ($this -> viewFile);
 		} else {
