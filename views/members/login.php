@@ -1,0 +1,1 @@
+<p><?php echo "user: " . $viewBag['user'] -> userId; ?></p>

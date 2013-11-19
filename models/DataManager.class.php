@@ -6,33 +6,44 @@
  * @author  ...
  */
 abstract class DataManager {
-	
+
 	private $handle;
-	
-	protected function query($sqlStmt){
-		$this->createHandle();
-		
+
+	protected function query($sqlStmt, $params = null) {
+		$this -> createHandle();
+
 		$result = array();
-		$sth = $this->handle->prepare($sqlStmt);
-		$sth->execute();
-		$result = $sth->fetchAll();
-		
-		$this->closeHandle();
-		
+		$sth = $this -> handle -> prepare($sqlStmt);
+		$sth -> execute($params);
+		$result = $sth -> fetchAll();
+
+		$this -> closeHandle();
+
 		return $result;
-	}   
-	
-	 protected function createHandle() {
-    	try{
-        	$this->handle = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-			if(DEVELOPMENT_ENVIRONMENT){
-				$this->handle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			}
-        }catch(PDOException $exception){
-        	error_log($exception->getMessage());
-        }
-    }
-	protected function closeHandle(){
-		$this->handle = null;
 	}
+
+	protected function createHandle() {
+		try {
+			$this -> handle = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
+			if (DEVELOPMENT_ENVIRONMENT) {
+				$this -> handle -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			}
+		} catch(PDOException $exception) {
+			error_log($exception -> getMessage());
+		}
+	}
+
+	protected function closeHandle() {
+		$this -> handle = null;
+	}
+
+	protected function toSingleObject($data) {
+		$objs = $this -> toObjects($data);
+		if (count($objs) == 1) {
+			return $objs[0];
+		}
+		return null;
+	}
+
+	protected abstract function toObjects($data);
 }
