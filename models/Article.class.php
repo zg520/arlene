@@ -1,5 +1,5 @@
 <?php
-class Article extends BaseModel {
+class Article {
 	public $title;
 	public $body;
 	public $coverUrl;
@@ -7,6 +7,7 @@ class Article extends BaseModel {
 	public $dislikes;
 	public $publishDate;
 	public $writers;
+	public $status;
 	protected $summary;
 
 	public function getSummary() {

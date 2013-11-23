@@ -1,5 +1,5 @@
 <?php
-class Member extends BaseModel {
+class Member {
 	public $userId;
 	public $role;
 	public $password;

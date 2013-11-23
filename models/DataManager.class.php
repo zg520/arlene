@@ -1,8 +1,8 @@
 <?php
 /**
  * The base class responsible for connecting to the database.
+ * Since the project uses only one database source this could be an abstract class inherited by every data manager.
  *
- * @package default
  * @author  ...
  */
 abstract class DataManager {

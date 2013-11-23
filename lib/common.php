@@ -20,7 +20,9 @@ function stripSlashesDeep($value) {
 	$value = is_array($value) ? array_map('stripSlashesDeep', $value) : stripslashes($value);
 	return $value;
 }
-
+function currentUser(){
+	return isset($_SESSION['user']) ? $_SESSION['user'] : null;
+}
 function removeMagicQuotes() {
 	if (get_magic_quotes_gpc()) {
 		$_GET = stripSlashesDeep($_GET);
@@ -47,3 +49,4 @@ function unregisterGlobals() {
 initLogging();
 removeMagicQuotes();
 unregisterGlobals();
+session_start();

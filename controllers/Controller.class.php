@@ -1,14 +1,14 @@
 <?php
 abstract class Controller {
-	protected $modelManager;
 	protected $action;
 	protected $uriParams;
 	protected $viewFile;
-
-	public function __construct($modelManager, $action, $uriParams) {
+	protected $viewBag;
+	
+	public function __construct( $action, $uriParams) {
 		$this -> action = $action;
 		$this -> uriParams = $uriParams;
-		$this -> modelManager = $modelManager;
+		$this -> viewBag = array();
 	}
 
 	public function execute() {

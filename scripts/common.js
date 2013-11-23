@@ -1,3 +1,10 @@
+$(document).ready(function() {
+	$(".previewImage").one("load", function() {
+		var height = $(this).css("height");
+		$(this).parent().css("height", height);
+	});
+});
+
 $(function() {
 	var name = $("#name"), password = $("#password"), allFields = $([]).add(name).add(password), tips = $(".validateTips");
 
@@ -63,4 +70,4 @@ $(function() {
 	$("#user-login").click(function() {
 		$("#dialog-form").dialog("open");
 	});
-}); 
+});

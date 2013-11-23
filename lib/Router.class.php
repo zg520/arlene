@@ -5,7 +5,10 @@ class Router {
 	private $action;
 	private $controllerName;
 
+	private $roles = array('publisher', 'editor', 'subscriber', 'writer');
+	
 	function __construct() {
+		
 		if (count($_GET) == 0) {
 			$this -> controllerName = 'Home';
 			$this -> action = 'index';
@@ -20,7 +23,7 @@ class Router {
 			$this -> action = 'index';
 		}
 	}
-
+	
 	public function route() {
 		if (!file_exists(ROOT . DS . "controllers" . DS . $this -> controllerName . "Controller.class.php")) {
 			return new ErrorController("badurl", $this -> uriParams);
@@ -34,5 +37,12 @@ class Router {
 			return new ErrorController("badurl", $this -> uriParams);
 		}
 	}
-
+	private function isAutorized(){
+		if(currentUser() == null){
+			return false;
+		}
+		else{
+			
+		}
+	}
 }

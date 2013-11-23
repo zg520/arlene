@@ -13,33 +13,16 @@
 	</head>
 	<body>
 		<div id="header">
-			<div class="nav">
-				<ul>
-					<li>
-						<a href="/">Home</a>
-					</li>
-					<li>
-						<a href="#" id="user-login" class=""><span class=""></span>Login</a>
-						<div id="dialog-form" style="width: 100px; height: 250px" title="Login">
-							<form id="login-form" action="/members/login" method="POST">
-								<fieldset>
-									<label for="name" style="display: block;">user name</label>
-									<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" style="display: block;"/>
-									<label for="password"style="display: block;">password</label>
-									<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" style="display: block;"/>
-								</fieldset>
-							</form>
-						</div>
-					</li>
-				</ul>
-			</div>
+			<?php
+			require ('/views/SharedHeader.php');
+			?>
 		</div>
 		<div id="wrapper">
 			<?php
 			require ($this -> viewFile);
 			?>
 		</div>
-		<div id="footer">
+		<div id="footer" >
 			Copyright &#169 2013 University Of York ghoul IAPT designer. All rights reserved.
 		</div>
 	</body>
