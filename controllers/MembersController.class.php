@@ -11,7 +11,7 @@ class MembersController extends Controller {
 		$member -> userId = $_POST['name'];
 		$member -> password = $_POST['password'];
 		$_SESSION['user'] = $this -> modelManager -> authenticateMember($member);
-		$viewBag['redirectUri'] = "/";
+		$viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 		$this -> renderView($viewBag);
 	}
 

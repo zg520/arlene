@@ -14,7 +14,11 @@ abstract class Controller {
 	public function execute() {
 		$this -> {$this->action}();
 	}
-
+	
+	protected function addNotification(Notification $notification){
+		$_SESSION['notifications']->enqueue($notification);
+	}
+	
 	protected function renderView($viewBag, $isPartial = false) {
 		$controllerName = get_class($this);
 		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';

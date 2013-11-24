@@ -1,20 +1,45 @@
-<section class="column">
-	<h1>Manage</h1>
-	<ul>
-		<li>Add Article</li>
-		<li>Add Column</li>
-		<li>Add Review</li>
-		<li>Add Article</li>
-	</ul>
-</section>
+<?php
+require ('SharedManageMenu.php');
+?>
 <section class="column doubleSized">
 	<h1>Overview</h1>
-		<?php foreach($viewBag['pendingArticles'] as $item) { ?>
+	<h2>Awaiting changes - <?php echo count($viewBag['awaitingChanges'])?></h2>
+		<?php foreach($viewBag['awaitingChanges'] as $item) { ?>
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
 				<p><?php echo $item -> getSummary(); ?> </p>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Read more.</a>
+				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
+			</div>
+		</article>
+		<?php } ?>
+	<h2>Under Review - <?php echo count($viewBag['underReview'])?></h2>
+		<?php foreach($viewBag['underReview'] as $item) { ?>
+		<article class="article-box">
+			<h1><?php echo $item -> title; ?></h1>
+			<div>
+				<p><?php echo $item -> getSummary(); ?> </p>
+				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a> 
+			</div>
+		</article>
+		<?php } ?>
+	<h2>Submitted - <?php echo count($viewBag['submitted'])?></h2>
+		<?php foreach($viewBag['submitted'] as $item) { ?>
+		<article class="article-box">
+			<h1><?php echo $item -> title; ?></h1>
+			<div>
+				<p><?php echo $item -> getSummary(); ?> </p>
+				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
+			</div>
+		</article>
+		<?php } ?>
+		<h2>Published - <?php echo count($viewBag['published'])?></h2>
+		<?php foreach($viewBag['published'] as $item) { ?>
+		<article class="article-box">
+			<h1><?php echo $item -> title; ?></h1>
+			<div>
+				<p><?php echo $item -> getSummary(); ?> </p>
+				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>

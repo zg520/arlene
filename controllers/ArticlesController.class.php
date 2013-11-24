@@ -9,7 +9,8 @@ class ArticlesController extends Controller {
 	public function getById() {
 		$viewBag = array();
 		$viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
-
+		$this->addNotification(new Notification("info", "Well that's cool!"));
+		
 		$this -> renderView($viewBag);
 	}
 

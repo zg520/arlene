@@ -70,4 +70,12 @@ $(function() {
 	$("#user-login").click(function() {
 		$("#dialog-form").dialog("open");
 	});
+
+	$(".ui-state-highlight").click(function() {
+		$(this).hide(0);
+	});
+	
+	$(".ui-state-highlight").each(function(index){
+		$(this).delay(400*index).fadeIn(300);
+	});
 });

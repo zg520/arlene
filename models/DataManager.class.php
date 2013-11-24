@@ -21,7 +21,19 @@ abstract class DataManager {
 
 		return $result;
 	}
+	
+	protected function upsert($sqlStmt, $params = null) {
+		$this -> createHandle();
 
+		$result = array();
+		$sth = $this -> handle -> prepare($sqlStmt);
+		$sth -> execute($params);
+		$result = $this->handle -> lastInsertId();
+
+		$this -> closeHandle();
+
+		return $result;
+	}
 	protected function createHandle() {
 		try {
 			$this -> handle = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);

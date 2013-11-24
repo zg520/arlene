@@ -17,6 +17,9 @@
 			require ('/views/SharedHeader.php');
 			?>
 		</div>
+			<?php
+			require ('/views/SharedNotifications.php');
+			?>
 		<div id="wrapper">
 			<?php
 			require ($this -> viewFile);

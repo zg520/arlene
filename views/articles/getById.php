@@ -1,4 +1,5 @@
-<article style="display: block;">
+<div class="column fullSized">
+	<article>
   <header>
     <h1><?php echo $viewBag['article'] -> title; ?></h1>
     <img src="<?php echo $viewBag['article'] -> coverUrl?>" alt="Cover Image">
@@ -26,3 +27,4 @@
     </article>
   </section>
 </article>
+</div>
