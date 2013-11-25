@@ -1,5 +1,10 @@
 <div class="nav">
 	<ul>
+		<?php if(CurrentUser::getUser()->isAuthenticated()):?>
+		<li><span style="float:left"> Hello	<?php echo CurrentUser::getUser()->userId; ?>
+		</span></li>
+		<?php endif; ?>
+		
 		<li>
 			<a href="/">Home</a>
 		</li>
@@ -9,8 +14,7 @@
 		<li>
 			<a href="/">Reviews</a>
 		</li>
-		<?php if(!currentUser()->isAuthenticated()):
-		?>
+		<?php if(!CurrentUser::getUser()->isAuthenticated()):?>
 		<li>
 			<a href="#" id="user-login" class="">Login</a>
 			<div id="dialog-form" title="Login">

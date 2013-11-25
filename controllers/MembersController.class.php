@@ -17,7 +17,12 @@ class MembersController extends Controller {
 
 	public function logout() {
 		$viewBag['user'] = $_SESSION['user'];
-		$viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
+		if (!strncmp(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH), "/admin", strlen($needle))) {
+			$viewBag['redirectUri'] = "/";
+		} else {
+			$viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
+		}
+
 		unregisterGlobals();
 		session_destroy();
 		$this -> renderView($viewBag);

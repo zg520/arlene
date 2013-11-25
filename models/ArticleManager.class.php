@@ -58,7 +58,7 @@ class ArticleManager extends DataManager {
 		return $this -> toObjects($result);
 	}
 
-	public function addNewArticle($title, $content, $imgUrl, $userId) {
+	public function addNew($title, $content, $imgUrl, $userId) {
 		$insertArticleSql = "INSERT into `articles` (`title`, `text_body`, `cover_uri`, `type`) VALUES(:title, :text_body, :cover_uri, 'article')";
 		$articleId = $this -> upsert($insertArticleSql, array("title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
 		$linkToUserSql = "INSERT into `writers` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";

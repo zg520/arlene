@@ -1,34 +1,40 @@
-<script src="/scripts/manageHelper.js"></script>
-<aside class="column">
-	<h1>Manage</h1>
+<aside class="column side-menu">
 	<ul>
-		<?php if(CurrentUser::hasPublisherAccess()): ?>
-			
+		<?php if(CurrentUser::hasPublisherAccess()):
+		?>
+		<h2>Manage Users</h2>
+		<li>
+			Elevate User Permissions
+		</li>
 		<?php endif; ?>
-		<?php if(CurrentUser::hasEditorAccess()): ?>
-			
+		<?php if(CurrentUser::hasEditorAccess()):
+		?>
+		<h2>Manage Content</h2>
+		<li>
+			Review Articles
+		</li>
+		<li>
+			Review Columns
+		</li>
+		<li>
+			Review Reviews
+		</li>
 		<?php endif; ?>
-		<?php if(CurrentUser::hasWriterAccess()): ?>
+		<?php if(CurrentUser::hasWriterAccess()):
+		?>
+		<script src="/scripts/addNewContentForm.js"></script>
+		<?php require('addNewContentForm.php'); ?>
+		<h2>Create Content</h2>
 		<li>
 			<a href="#" id="add-article"><span></span>Add Article</a>
-			<div id="dialog-form" title="New Article">
-				<form id="add-article-form" action="/admin/addArticle" method="POST">
-					<fieldset style="height: 600px">
-						<label for="title" style="display: block;" autofocus>title</label>
-						<input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" style="display: block;"/>
-						
-						<label for="contents"style="display: block;">contents</label>
-						<textarea rows="1" name="contents" id="contents" cols="26" name="reply" class="text ui-widget-content ui-corner-all"></textarea>
-						
-						<label for="imgUrl" style="display: block;">Image Url</label>
-						<input type="text" name="imgUrl" id="imgUrl" class="text ui-widget-content ui-corner-all" style="display: block;"/>
-					</fieldset>
-				</form>
-			</div>
 		</li>
-		<li>Add Column</li>
-		<li>Add Review</li>
-		<li>Add Article</li>
+		<li>
+			<a href="#" id="add-column"><span></span>Add Column</a>
+		</li>
+		<li>
+			<a href="#" id="add-review"><span></span>Add Review</a>
+		</li>
+		
 		<?php endif; ?>
 	</ul>
 </aside>

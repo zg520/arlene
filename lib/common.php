@@ -21,9 +21,6 @@ function stripSlashesDeep($value) {
 	return $value;
 }
 
-function currentUser() {
-	return $_SESSION['user'];
-}
 
 function userRoleToInt($roleOne) {
 	if ($roleOne == "reader")

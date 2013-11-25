@@ -24,16 +24,6 @@ body, html {
 .fullSized {
 	width: 96%;
 }
-.column li {
-	margin-bottom: 25px;
-	display: block;
-}
-.column ul {
-	margin: 0;
-	padding: 0;
-	padding-left: 5px;
-	display: block;
-}
 
 .article-box {
 	position: relative;
@@ -105,4 +95,28 @@ body, html {
 	background: -webkit-linear-gradient(top, #E0E0E0, #F0F0F0);
 	background: -moz-linear-gradient(top, #E0E0E0, #F0F0F0);
 	background: -ms-linear-gradient(top, #E0E0E0, #F0F0F0);
+}
+.side-menu {
+	text-shadow: 3px 2px 3px #FFFFFF;
+}
+.side-menu li {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background: -webkit-linear-gradient(left, #F0F0F0, #E0E0E0);
+	background: -moz-linear-gradient(left, #F0F0F0, #E0E0E0);
+	background: -ms-linear-gradient(left, #F0F0F0, #E0E0E0);
+}
+.side-menu li:hover {
+	background: -webkit-linear-gradient(right, #F0F0F0, #E0E0E0);
+	background: -moz-linear-gradient(right, #F0F0F0, #E0E0E0);
+	background: -ms-linear-gradient(right, #F0F0F0, #E0E0E0);
+}
+.side-menu ul {
+	margin: 0;
+	padding: 0;
+	padding-left: 5px;
+	list-style-type: none;
+}
+.side-menu a{
+	text-decoration: none;
 }

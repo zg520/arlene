@@ -31,7 +31,7 @@ class Router {
 		$class = ucfirst(strtolower($this -> controllerName)) . "Controller";
 		if (method_exists($class, $this -> action)) {
 			$obj = new $class($this -> action, $this -> uriParams);
-			if ($obj -> isAuthorized(currentUser() -> role)) {
+			if ($obj -> isAuthorized(CurrentUser::getUser() -> role)) {
 				return $obj;
 			} else {
 				return new ErrorController("unauthorized", $this -> uriParams);

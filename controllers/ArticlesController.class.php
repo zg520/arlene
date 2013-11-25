@@ -7,8 +7,8 @@ class ArticlesController extends Controller {
 	}
 
 	public function getById() {
-		if(currentUser() != null){
-			$this->viewBag['article'] = $this -> modelManager -> getForUserById($this -> uriParams[2], currentUser() -> userId);
+		if(CurrentUser::getUser() -> isAuthenticated()){
+			$this->viewBag['article'] = $this -> modelManager -> getForUserById($this -> uriParams[2], CurrentUser::getUser() -> userId);
 		}else{
 			$this->viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
 		}

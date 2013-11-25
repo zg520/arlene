@@ -9,7 +9,7 @@ class CurrentUser {
 		self::$userRolesWeight = array('reader' => 0, 'subscriber' => 2, 'writer' => 4, 'editor' => 6, 'publisher' => 8);
 	}
 
-	public static function getCurrentUser() {
+	public static function getUser() {
 		return $_SESSION['user'];
 	}
 
@@ -26,7 +26,7 @@ class CurrentUser {
 	}
 
 	private static function hasAccess($roleToVerify) {
-		if (self::$userRolesWeight[self::getCurrentUser() -> role] < self::$userRolesWeight[$roleToVerify]) {
+		if (self::$userRolesWeight[self::getUser() -> role] < self::$userRolesWeight[$roleToVerify]) {
 			return false;
 		} else {
 			return true;
