@@ -8,9 +8,9 @@ class HomeController extends Controller {
 
 	public function index() {
 		$viewBag = array();
-		$viewBag['recommended'] = $this -> modelManager -> getRecommended();
-		$viewBag['newest'] = $this -> modelManager -> getNewest();
-		$viewBag['popular'] = $this -> modelManager -> getRecommended();
+		$viewBag['recommended'] = $this -> modelManager -> getRecommended(5, 0);
+		$viewBag['newest'] = $this -> modelManager -> getNewest(5, 0);
+		$viewBag['popular'] = $this -> modelManager -> getRecommended(5, 0);
 		$this -> renderView($viewBag);
 	}
 

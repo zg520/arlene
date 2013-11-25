@@ -18,10 +18,10 @@ body, html {
 	/*background: #ACD1E9;*/
 	/*box-shadow: 1px 1px 1px #888888;*/
 }
-.doubleSized{
+.doubleSized {
 	width: 63%;
 }
-.fullSized{
+.fullSized {
 	width: 96%;
 }
 .column li {
@@ -56,21 +56,10 @@ body, html {
 	background: rgba(0, 0, 0, 0.7);
 }
 
-.nav {
-	width: 1024px;
-	height: 35px;
-	font-size: 16px;
-	font-family: Tahoma, Geneva, sans-serif;
-	font-weight: bold;
-	text-align: center;
-	text-shadow: 3px 2px 3px #333333;
-	background-color: #8AD9FF;
-	border-radius: 8px;
-	margin-left: auto;
-	margin-right: auto;
-}
 #header {
-	background: #B7AFA3;
+	background: -webkit-linear-gradient(bottom, #E0E0E0  , #FFFFFF);
+	background: -moz-linear-gradient(bottom, #E0E0E0  , #FFFFFF);
+	background: -ms-linear-gradient(bottom, #E0E0E0  , #FFFFFF);
 }
 #wrapper {
 	max-width: 1024px;
@@ -81,6 +70,20 @@ body, html {
 	position: fixed;
 	bottom: 1px;
 	max-width: 1024px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.nav {
+	position: relative;
+	width: 1024px;
+	height: 35px;
+	max-height: 175px;
+	font-size: 16px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 3px 2px 3px #FFFFFF;
+	border-radius: 1px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -95,10 +98,11 @@ body, html {
 }
 .nav a {
 	text-decoration: none;
-	color: #00F;
+	color: #333333;
 	padding: 8px 8px 8px 8px;
 }
 .nav a:hover {
-	color: #F90;
-	background-color: #FFF;
+	background: -webkit-linear-gradient(top, #E0E0E0, #F0F0F0);
+	background: -moz-linear-gradient(top, #E0E0E0, #F0F0F0);
+	background: -ms-linear-gradient(top, #E0E0E0, #F0F0F0);
 }

@@ -7,17 +7,19 @@ class ArticlesController extends Controller {
 	}
 
 	public function getById() {
-		$viewBag = array();
-		$viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
+		if(currentUser() != null){
+			$this->viewBag['article'] = $this -> modelManager -> getForUserById($this -> uriParams[2], currentUser() -> userId);
+		}else{
+			$this->viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
+		}
 		$this->addNotification(new Notification("info", "Well that's cool!"));
 		
-		$this -> renderView($viewBag);
+		$this -> renderView($this->viewBag);
 	}
 
 	public function index() {
-		$viewBag = array();
-		$viewBag['all'] = $this -> modelManager -> getById();
-		$this -> renderView($viewBag);
+		$this->viewBag['all'] = $this -> modelManager -> getById();
+		$this -> renderView($this->viewBag);
 	}
 
 }

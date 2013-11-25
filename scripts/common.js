@@ -36,6 +36,12 @@ $(function() {
 	}
 
 
+	$("#dialog-form").keypress(function(e) {
+		if (e.keyCode == $.ui.keyCode.ENTER) {
+			$("#login-form").submit();
+			$(this).dialog("close");
+		}
+	});
 	$("#dialog-form").dialog({
 		autoOpen : false,
 		height : 350,
@@ -74,8 +80,8 @@ $(function() {
 	$(".ui-state-highlight").click(function() {
 		$(this).hide(0);
 	});
-	
-	$(".ui-state-highlight").each(function(index){
-		$(this).delay(400*index).fadeIn(300);
+
+	$(".ui-state-highlight").each(function(index) {
+		$(this).delay(400 * index).fadeIn(300);
 	});
 });

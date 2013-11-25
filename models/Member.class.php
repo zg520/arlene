@@ -8,5 +8,7 @@ class Member {
 	public function isAuthenticated() {
 		return $this -> isAuthenticated;
 	}
-
+	public function authenticate() {
+		$this -> isAuthenticated = true;
+	}
 }

@@ -8,10 +8,11 @@ $(function() {
 		}, 500);
 	}
 
-	function checkWordLength(o, n, min, max) {
-		if (o.val().length > max || o.val().length < min) {
+	function checkWordLength(content,name, min, max) {
+		var words = content.split(" ");
+		if (words.length >= max || words.length < min) {
 			o.addClass("ui-state-error");
-			updateTips("Length of " + n + " must be between " + min + " and " + max + ".");
+			updateTips("Length of " + name + " must be between " + min + " and " + max + ".");
 			return false;
 		} else {
 			return true;
@@ -29,6 +30,7 @@ $(function() {
 				var bValid = true;
 				
 				allFields.removeClass("ui-state-error");
+				bValid = checkWordLength(contents, "content", 100, 2000);
 				if (bValid) {
 					$("#add-article-form").submit();
 					$(this).dialog("close");

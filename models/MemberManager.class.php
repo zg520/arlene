@@ -22,6 +22,7 @@ class MemberManager extends DataManager {
 			foreach ($values as $memberValue) {
 				$member -> {$memberValue} = $data[$i][$this -> memberMapping[$memberValue]];
 			}
+			$member-> authenticate();
 			array_push($members, $member);
 		}
 		return $members;

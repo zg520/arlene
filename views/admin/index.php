@@ -8,7 +8,6 @@ require ('SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<p><?php echo $item -> getSummary(); ?> </p>
 				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
@@ -18,7 +17,6 @@ require ('SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<p><?php echo $item -> getSummary(); ?> </p>
 				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a> 
 			</div>
 		</article>
@@ -28,7 +26,6 @@ require ('SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<p><?php echo $item -> getSummary(); ?> </p>
 				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
@@ -38,7 +35,6 @@ require ('SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<p><?php echo $item -> getSummary(); ?> </p>
 				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>

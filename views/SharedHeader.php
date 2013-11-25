@@ -3,24 +3,32 @@
 		<li>
 			<a href="/">Home</a>
 		</li>
-		<?php if(currentUser() == null): ?>
 		<li>
-			<a href="#" id="user-login" class=""><span class=""></span>Login</a>
-			<div id="dialog-form" style="width: 100px; height: 250px" title="Login">
+			<a href="/">Columns</a>
+		</li>
+		<li>
+			<a href="/">Reviews</a>
+		</li>
+		<?php if(!currentUser()->isAuthenticated()):
+		?>
+		<li>
+			<a href="#" id="user-login" class="">Login</a>
+			<div id="dialog-form" title="Login">
 				<form id="login-form" action="/members/login" method="POST">
 					<fieldset>
-						<label for="name" style="display: block;">user name</label>
-						<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" style="display: block;"/>
-						<label for="password"style="display: block;">password</label>
-						<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" style="display: block;"/>
+						<label for="name" >user name</label>
+						<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/>
+						<label for="password">password</label>
+						<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all"/>
 					</fieldset>
 				</form>
 			</div>
 			<?php else: ?>
 		<li>
-		<a href="/admin"><span class=""></span>My Articles</a>
+			<a href="/admin">My Content</a>
 		</li>
-		<a href="/members/logout" ><span class=""></span>Logout</a>
+		<li>
+		<a href="/members/logout">Logout</a>
 		</li>
 		<?php endif; ?>
 	</ul>

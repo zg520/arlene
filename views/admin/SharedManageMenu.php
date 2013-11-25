@@ -1,8 +1,14 @@
 <script src="/scripts/manageHelper.js"></script>
-<section class="column">
+<aside class="column">
 	<h1>Manage</h1>
 	<ul>
-		<?php if(currentUser()->role = "writer"): ?>
+		<?php if(CurrentUser::hasPublisherAccess()): ?>
+			
+		<?php endif; ?>
+		<?php if(CurrentUser::hasEditorAccess()): ?>
+			
+		<?php endif; ?>
+		<?php if(CurrentUser::hasWriterAccess()): ?>
 		<li>
 			<a href="#" id="add-article"><span></span>Add Article</a>
 			<div id="dialog-form" title="New Article">
@@ -20,10 +26,9 @@
 				</form>
 			</div>
 		</li>
-			<?php else: ?>
-		<?php endif; ?>
 		<li>Add Column</li>
 		<li>Add Review</li>
 		<li>Add Article</li>
+		<?php endif; ?>
 	</ul>
-</section>
+</aside>

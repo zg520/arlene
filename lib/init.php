@@ -1,5 +1,4 @@
 <?php
-
 /** Indicates whether this is a development environment **/
 define('DEVELOPMENT_ENVIRONMENT', true);
 /** Defines the name of the default database. **/

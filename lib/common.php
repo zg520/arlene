@@ -10,7 +10,7 @@ function initLogging() {
 		error_reporting(E_ALL);
 		ini_set('display_errors', 'Off');
 		ini_set('log_errors', 'On');
-		ini_set('error_log', ROOT . DS . 'tmp' . DS . 'logs' . DS . com_create_guid() . '.log');
+		/*ini_set('error_log', ROOT . DS . 'tmp' . DS . 'logs' . DS . com_create_guid() . '.log');*/
 	}
 }
 
@@ -22,7 +22,20 @@ function stripSlashesDeep($value) {
 }
 
 function currentUser() {
-	return isset($_SESSION['user']) ? $_SESSION['user'] : null;
+	return $_SESSION['user'];
+}
+
+function userRoleToInt($roleOne) {
+	if ($roleOne == "reader")
+		return 0;
+	else if ($roleOne == "subscriber")
+		return 2;
+	else if ($roleOne == "writer")
+		return 4;
+	else if ($roleOne == "editor")
+		return 6;
+	else if ($roleOne == "publisher")
+		return 8;
 }
 
 function removeMagicQuotes() {
@@ -58,10 +71,11 @@ function notificationsExist() {
 
 function setupSession() {
 	session_start();
+	CurrentUser::init();
+	if (!isset($_SESSION['user'])) {
+		$_SESSION['user'] = new Member();
+		$_SESSION['user'] -> userId = "anonymous";
+		$_SESSION['user'] -> role = "reader";
+	}
 	$_SESSION['notifications'] = new SplQueue();
 }
-
-initLogging();
-removeMagicQuotes();
-unregisterGlobals();
-setupSession();
