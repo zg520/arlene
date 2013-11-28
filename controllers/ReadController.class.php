@@ -38,7 +38,6 @@ class ReadController extends Controller {
 	}
 
 	public function comment() {
-		var_dump($_POST);
 		if (!array_key_exists('comment', $_POST) && !array_key_exists('article_id', $_POST)) {
 			$this -> addNotification(new Notification('warn', 'Upsi.. Daisy.. Something went wrong.'));
 			$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];

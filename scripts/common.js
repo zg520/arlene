@@ -80,7 +80,12 @@ $(function() {
 	$(".ui-state-highlight").click(function() {
 		$(this).hide(0);
 	});
-
+	$("#statusSubmit span").mouseover(function() {
+		$('#statusSubmit form').show();
+	});
+	$("#statusSubmit").mouseleave(function() {
+		$('#statusSubmit form').hide();
+	});
 	$(".ui-state-highlight").each(function(index) {
 		$(this).delay(400 * index).fadeIn(300);
 	});

@@ -8,7 +8,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -17,7 +17,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a> 
+				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a> 
 			</div>
 		</article>
 		<?php } ?>
@@ -26,7 +26,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -35,7 +35,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>

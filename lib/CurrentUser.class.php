@@ -3,9 +3,15 @@ class CurrentUser {
 
 	private static $userRolesWeight;
 	
+	/**
+	 * Prevents the CurrentUser class of being instantiated.
+	 */
 	private function __construct() {
 	}
-
+	
+	/**
+	 * Initialises the CurrentUser class.
+	 */
 	public static function init() {
 		self::$userRolesWeight = array('reader' => 0, 'subscriber' => 2, 'writer' => 4, 'editor' => 6, 'publisher' => 8);
 	}

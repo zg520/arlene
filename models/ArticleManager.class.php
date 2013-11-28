@@ -2,18 +2,20 @@
 class ArticleManager extends DataManager {
 
 	private $objMapper;
+	
 	public function __construct() {
 		$this -> objMapper = new ObjectMapper();
 	}
 
 	/**
-	 * Fetches articles.
+	 * Fetches bare bone articles.
 	 *
 	 * @param string $id The article Id.
-	 * @param string $status The status of the article
+	 * @param string $status The status of the article. Optional parameter with default value of "published".
+	 * @param bool $editorCommentsIncluded Whether to include editor comments when constructing the Article.
 	 * @return Article The article from the database or null.
 	 */
-	public function getById($id, $status = "published") {
+	public function getById($id, $status = "published", $editorCommentsIncluded = false) {
 		if ($status == null) {
 			$sql = "SELECT * FROM `full_articles` WHERE `id` = :id";
 			$params = array('id' => $id);
@@ -22,16 +24,29 @@ class ArticleManager extends DataManager {
 			$params = array('id' => $id, 'status' => $status);
 		}
 		$result = $this -> query($sql, $params);
-
+		
 		if (count($result) > 0) {
 			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
 			$article -> writers = $this -> getArticleWriters($article -> id);
 			$article -> publicComments = $this -> getArticleComments($article -> id);
-			$article -> likes = $this -> getArticleLikesOrDislikes($article -> id, "positive");
-			$article -> dislikes = $this -> getArticleLikesOrDislikes($article -> id, "negative");
+			$article -> likes = $this -> getVotes($article -> id, "positive");
+			$article -> dislikes = $this -> getVotes($article -> id, "negative");
+			if($editorCommentsIncluded){
+				$article -> editorComments = $this -> getEditorComments($article -> id);
+			}
 			return $article;
 		}
 		return null;
+	}
+
+	public function getNewest($top = 5, $skip = 0) {
+		$newest = array();
+		$sql = "SELECT id FROM full_articles INNER JOIN publishmetadata ON id = article_id WHERE status = 'published' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
+		$result = $this -> query($sql);
+		foreach ($result as $row) {
+			array_push($newest, $this -> getById($row['id']));
+		}
+		return $newest;
 	}
 
 	public function getForUserById($id, $user) {
@@ -49,13 +64,35 @@ class ArticleManager extends DataManager {
 		return null;
 	}
 
+
+
+	public function changeStatus($id, $editorId, $newStatus) {
+		$insertArticleSql = "INSERT into `articles` WHERE `id` = :id (`status`) VALUES(:status)";
+		$articleId = $this -> upsert($insertArticleSql, array("id" => $id, "status" => $newStatus));
+	}
+	
+	/**
+	 * Adds an editor comment to an article.
+	 * 
+	 * @access public
+	 * @param string $id The id of the article to add a comment to.
+	 * @param string $userId The id of the user adding the comment.
+	 * @param string $comment The comment to be added to the article.
+	 * @return true if the operation was successful
+	 */
 	public function addEditorCommentToId($id, $editorId, $comment) {
-		$insertArticleSql = "INSERT into `articleedits` (`article_id`, `user_id`, `comment`) VALUES(:id, :editorId, :comment)";
-		$articleId = $this -> upsert($insertArticleSql, array("articleId" => $id, "editorId" => $editorId, "comment" => $comment));
+		$sql = "INSERT into `articleedits` (`article_id`, `user_id`, `comment`) VALUES(:articleId, :editorId, :comment)";
+		$commentId= $this -> upsert($sql, array("articleId" => $id, "editorId" => $editorId, "comment" => $comment));
+		if ($commentId != null) {
+			return true;
+		}
+
+		return false;
 	}
 	
 	/**
 	 * Adds a user comment to an article.
+	 * 
 	 * @access public
 	 * @param string $id The id of the article to add a comment to.
 	 * @param string $userId The id of the user adding the comment.
@@ -63,33 +100,35 @@ class ArticleManager extends DataManager {
 	 * @return true if the operation was successful
 	 */
 	public function addUserCommentToId($id, $userId, $comment) {
-		$insertArticleSql = "INSERT into `comments` (`article_id`, `user_id`, `comment`) VALUES(:articleId, :userId, :comment)";
-		$commentId = $this -> upsert($insertArticleSql, array("articleId" => $id, "userId" => $userId, "comment" => $comment));
-		if($commentId != null){
+		$sql = "INSERT into `comments` (`article_id`, `user_id`, `comment`) VALUES(:articleId, :userId, :comment)";
+		$commentId = $this -> upsert($sql, array("articleId" => $id, "userId" => $userId, "comment" => $comment));
+		if ($commentId != null) {
 			return true;
 		}
-		
+
 		return false;
 	}
 	
-	public function changeStatus($id, $editorId, $newStatus) {
-		$insertArticleSql = "INSERT into `articles` WHERE `id` = :id (`status`) VALUES(:status)";
-		$articleId = $this -> upsert($insertArticleSql, array("id" => $id, "status" => $newStatus));
-	}
+	public function addNew($title, $content, $imgUrl, $userId) {
+		$insertArticleSql = "INSERT into `articles` (`id`, `title`, `text_body`, `cover_uri`, `type`) VALUES(:id, :title, :text_body, :cover_uri, 'article')";
+		$articleId = Utility::generateArticleId($title);
+		$this -> upsert($insertArticleSql, array("id" => $articleId, "title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
+		$linkToUserSql = "INSERT into `articlewriters` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";
+		$this -> upsert($linkToUserSql, array("article_id" => $articleId, "user_id" => $userId));
 
-	public function getNewest($top = 5, $skip = 0) {
-		$newest = array();
-		$sql = "SELECT id FROM full_articles INNER JOIN publishmetadata ON id = article_id WHERE status = 'published' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		foreach ($result as $row) {
-			array_push($newest, $this -> getById($row['id']));
-		}
-		return $newest;
+		return true;
 	}
-
+	
+	/**
+	 * Gets the articles associated with a writer by using their status.
+	 * 
+	 * @param string $userId The user id.
+	 * @param string $status The article status.
+	 * @return array The articles with specific status associated with an user.
+	 */
 	public function getWriterArticles($userId, $status) {
-		$result = $this -> query("SELECT * FROM `articlewriters` INNER JOIN `articles` ON `articles`.`id` = `articlewriters`.`article_id` WHERE `user_id` = ? AND `status` = ?", array($userId, $status));
-
+		$result = $this -> query("SELECT * FROM `articlewriters` INNER JOIN `articles` ON `articles`.`id` = `articlewriters`.`article_id` WHERE `user_id` = ? AND `status` = ?", 
+								array($userId, $status));
 		return $this -> objMapper -> toArticles($result);
 	}
 
@@ -125,45 +164,59 @@ class ArticleManager extends DataManager {
 		return $all;
 	}
 
-	public function addNew($title, $content, $imgUrl, $userId) {
-		$insertArticleSql = "INSERT into `articles` (`id`, `title`, `text_body`, `cover_uri`, `type`) VALUES(:id, :title, :text_body, :cover_uri, 'article')";
-		$articleId = Utility::generateArticleId($title);
-		$this -> upsert($insertArticleSql, array("id" => $articleId, "title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
-		$linkToUserSql = "INSERT into `articlewriters` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";
-		$this -> upsert($linkToUserSql, array("article_id" => $articleId, "user_id" => $userId));
-
-		return true;
-	}
-
+	/**
+	 * Gets the writers of the article.
+	 *
+	 * @param string $id The article id.
+	 * @return array Members elected as writers of the article.
+	 */
 	public function getArticleWriters($id) {
 		$writerSql = "SELECT `user_id` FROM `articlewriters` WHERE `article_id` = :articleId";
 		$writers = $this -> query($writerSql, array('articleId' => $id));
 		return $this -> objMapper -> toMembers($writers);
 	}
 	
-	public function getArticleComments($id) {
-		$commentSql = "SELECT `user_id`, `comment`, `date_posted` FROM `comments` WHERE `article_id` = :articleId ORDER BY `date_posted` DESC";
+	/**
+	 * Gets the editors comments of the article.
+	 *
+	 * @param string $id The article id.
+	 * @return array User comments related to the article.
+	 */
+	public function getEditorComments($id) {
+		$commentSql = "SELECT `user_id`, `comment`, `date_posted` FROM `articleedits` WHERE `article_id` = :articleId ORDER BY `date_posted` DESC";
 		$comments = $this -> query($commentSql, array('articleId' => $id));
 		return $this -> objMapper -> toComments($comments);
 	}
 	
 	/**
+	 * Gets the comments of the article.
+	 *
+	 * @param string $id The article id.
+	 * @return array User comments related to the article.
+	 */
+	public function getArticleComments($id) {
+		$commentSql = "SELECT `user_id`, `comment`, `date_posted` FROM `comments` WHERE `article_id` = :articleId ORDER BY `date_posted` DESC";
+		$comments = $this -> query($commentSql, array('articleId' => $id));
+		return $this -> objMapper -> toComments($comments);
+	}
+
+	/**
 	 * Gets the number of article's likes or dislikes.
-	 * 
+	 *
 	 * @access public
 	 * @param string $id The id of the article.
 	 * @param string $voteType The type of vote. "Positive" or "Negative".
 	 * @return int The number of likes or dislikes.
 	 */
-	public function getArticleLikesOrDislikes($id, $voteType) {
+	public function getVotes($id, $voteType) {
 		$sql = "SELECT Count(*) FROM `articlelikes` WHERE `article_id` = :articleId AND `vote` = :vote";
 		$result = $this -> query($sql, array('articleId' => $id, 'vote' => $voteType));
 		return $result[0][0];
 	}
-	
+
 	/**
 	 * Adds a user vote to an article.
-	 * 
+	 *
 	 * @access public
 	 * @param string $id The id of the article.
 	 * @param string $userId The id of the user.
@@ -174,9 +227,9 @@ class ArticleManager extends DataManager {
 		$sql = "SELECT vote FROM `articlelikes` WHERE `article_id` = :id AND `user_id` = :userId";
 		$params = array('id' => $id, 'userId' => $userId);
 		$result = $this -> query($sql, $params);
-		
+
 		$insertParams = array('id' => $id, 'userId' => $userId, 'vote' => $voteType);
-		
+
 		if (count($result[0]) == 0) {
 			$voteSql = "INSERT into `articlelikes` (`article_id`, `user_id`, `vote`) VALUES(:id, :userId, :vote)";
 			$this -> upsert($voteSql, $insertParams);
