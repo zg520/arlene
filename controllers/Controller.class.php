@@ -30,13 +30,13 @@ abstract class Controller {
 		$_SESSION['notifications'] -> enqueue($notification);
 	}
 
-	protected function renderView($viewBag, $isPartial = true) {
+	protected function renderView($viewBag, $isRedirect = false) {
 		$controllerName = get_class($this);
 		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
-		if ($isPartial) {
-			require (ROOT . DS . 'views' . DS . 'SharedLayout.php');
+		if ($isRedirect) {
+			require (ROOT . DS . 'views' . DS . 'SharedRedirect.php');
 		} else {
-			require ($this -> viewFile);
+			require (ROOT . DS . 'views' . DS . 'SharedLayout.php');
 		}
 	}
 

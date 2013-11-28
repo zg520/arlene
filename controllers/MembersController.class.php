@@ -17,7 +17,7 @@ class MembersController extends Controller {
 			$this-> addNotification(new Notification('error', "Couldnt authenticate you. Try again."));
 		}
 		$viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($viewBag);
+		$this -> renderView($viewBag, true);
 	}
 
 	public function logout() {
@@ -30,7 +30,7 @@ class MembersController extends Controller {
 
 		unregisterGlobals();
 		session_destroy();
-		$this -> renderView($viewBag);
+		$this -> renderView($viewBag, true);
 	}
 
 }

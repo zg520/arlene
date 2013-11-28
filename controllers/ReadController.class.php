@@ -22,7 +22,7 @@ class ReadController extends Controller {
 			$this -> addNotification(new Notification('warn', "You can't vote twice."));
 		}
 		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($this -> viewBag);
+		$this -> renderView($this -> viewBag, true);
 	}
 
 	public function dislike() {
@@ -32,7 +32,7 @@ class ReadController extends Controller {
 			$this -> addNotification(new Notification('warn', "You can't vote twice."));
 		}
 		$this ->viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($this -> viewBag);
+		$this -> renderView($this -> viewBag, true);
 	}
 
 	public function index() {
