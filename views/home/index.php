@@ -8,7 +8,7 @@
 			</header>
 			<div style="position: relative; vertical-align: bottom;">
 				<p><?php echo $item -> getSummary(); ?> </p>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Read more.</a>
+				<a href="/read/getbyid/<?php echo $item -> id ?>">Read more.</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -23,7 +23,7 @@
 			</header>
 			<div style="position: relative; vertical-align: bottom;">
 				<p><?php echo $item -> getSummary(); ?> </p>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Read more.</a>
+				<a href="/read/getbyid/<?php echo $item -> id ?>">Read more.</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -38,7 +38,7 @@
 			</header>
 			<div style="position: relative; vertical-align: bottom;">
 				<p><?php echo $item -> getSummary(); ?> </p>
-				<a href="/articles/getbyid/<?php echo $item -> id ?>">Read more.</a>
+				<a href="/read/getbyid/<?php echo $item -> id ?>">Read more.</a>
 			</div>
 		</article>
 		<?php } ?>

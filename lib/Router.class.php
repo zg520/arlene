@@ -27,7 +27,6 @@ class Router {
 		if (!file_exists(ROOT . DS . "controllers" . DS . $this -> controllerName . "Controller.class.php")) {
 			return new ErrorController("badurl", $this -> uriParams);
 		}
-
 		$class = ucfirst(strtolower($this -> controllerName)) . "Controller";
 		if (method_exists($class, $this -> action)) {
 			$obj = new $class($this -> action, $this -> uriParams);

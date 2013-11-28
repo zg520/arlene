@@ -1,11 +1,15 @@
 <?php
 class Article {
+	public $id;
 	public $title;
 	public $body;
 	public $coverUrl;
 	public $likes;
 	public $dislikes;
 	public $publishDate;
+	public $publicComments;
+	public $editorComments;
+	public $editor;
 	public $writers;
 	public $status;
 	protected $summary;

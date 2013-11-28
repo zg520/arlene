@@ -4,7 +4,7 @@
 				<fieldset>
 					<div id="title-field">
 						<label for="title" style="display: block;" autofocus>title</label>
-						<input type="text" name="title" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
+						<input type="text" id="title" name="title" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
 					</div>
 					<div id="imgUrl-field">
  						<label for="imgUrl" style="display: block;">Image Url</label>

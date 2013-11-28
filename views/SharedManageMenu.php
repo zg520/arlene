@@ -11,19 +11,19 @@
 		?>
 		<h2>Manage Content</h2>
 		<li>
-			Review Articles
+			<a href="/edit/articles"><span></span>Edit Articles</a>
 		</li>
 		<li>
-			Review Columns
+			<a href="/edit/columns"><span></span>Edit Columns</a>
 		</li>
 		<li>
-			Review Reviews
+			<a href="/edit/reviews"><span></span>Edit Reviews</a>
 		</li>
 		<?php endif; ?>
 		<?php if(CurrentUser::hasWriterAccess()):
 		?>
 		<script src="/scripts/addNewContentForm.js"></script>
-		<?php require('addNewContentForm.php'); ?>
+		<?php require('SharedaddNewContentForm.php'); ?>
 		<h2>Create Content</h2>
 		<li>
 			<a href="#" id="add-article"><span></span>Add Article</a>
@@ -34,7 +34,6 @@
 		<li>
 			<a href="#" id="add-review"><span></span>Add Review</a>
 		</li>
-		
 		<?php endif; ?>
 	</ul>
 </aside>

@@ -34,8 +34,7 @@ $(function() {
 				var bValid = true;
 				allFields.removeClass('ui-state-error');
 				bValid = bValid && checkWordLength(contents, 'Contents', 100, 2000);
-				bValid = bValid && checkWordLength(title, 'Title', 2, 25);
-				bValid = bValid && checkWordLength(name, 'Title', 2, 25);
+				bValid = bValid && checkWordLength(title, 'Title', 2, 100);
 				if (bValid) {
 					$('#add-new-form').submit();
 					$(this).dialog('close');

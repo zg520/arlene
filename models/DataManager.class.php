@@ -49,13 +49,10 @@ abstract class DataManager {
 		$this -> handle = null;
 	}
 
-	protected function toSingleObject($data) {
-		$objs = $this -> toObjects($data);
+	protected function toSingleObject($objs) {
 		if (count($objs) == 1) {
 			return $objs[0];
 		}
 		return null;
 	}
-
-	protected abstract function toObjects($data);
 }

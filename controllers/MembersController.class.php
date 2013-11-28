@@ -5,12 +5,17 @@ class MembersController extends Controller {
 		parent::__construct($action, $uriParams);
 		$this -> modelManager = new MemberManager();
 	}
-
+	
 	public function login() {
 		$member = new Member();
 		$member -> userId = $_POST['name'];
 		$member -> password = $_POST['password'];
-		$_SESSION['user'] = $this -> modelManager -> authenticateMember($member);
+		try{
+			$_SESSION['user'] = $this -> modelManager -> authenticateMember($member);
+			setupSession();
+		}catch(Exception $e){
+			$this-> addNotification(new Notification('error', "Couldnt authenticate you. Try again."));
+		}
 		$viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 		$this -> renderView($viewBag);
 	}

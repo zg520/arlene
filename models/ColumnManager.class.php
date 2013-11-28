@@ -50,9 +50,13 @@ class ColumnManager extends DataManager {
 		return $this -> toObjects($result);
 	}
 
-	public function addNew($title, $content, $imgUrl, $userId, $topic) {
-		echo "called Column Manager";
-		
+	public function addNew($title, $content, $imgUrl, $topic, $userId) {
+		$insertArticleSql = "INSERT into `articles` (`title`, `text_body`, `cover_uri`, `type`) VALUES(:title, :text_body, :cover_uri, 'article')";
+		$articleId = $this -> upsert($insertArticleSql, array("title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
+		$insertColumnSql = "INSERT into `columnarticles` (`article_id`, `topic`) VALUES(:article_id, :topic)";
+		$this -> upsert($insertColumnSql, array("article_id" => $articleId, "topic" => $topic));
+		$linkToUserSql = "INSERT into `writers` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";
+		$this -> upsert($linkToUserSql, array("article_id" => $articleId, "user_id" => $userId));
 		return null;
 	}
 

@@ -1,5 +1,5 @@
 <?php
-class ArticlesController extends Controller {
+class ReadController extends Controller {
 	private $modelManager;
 	public function __construct($action, $uriParams) {
 		parent::__construct($action, $uriParams);
@@ -7,19 +7,37 @@ class ArticlesController extends Controller {
 	}
 
 	public function getById() {
-		if(CurrentUser::getUser() -> isAuthenticated()){
-			$this->viewBag['article'] = $this -> modelManager -> getForUserById($this -> uriParams[2], CurrentUser::getUser() -> userId);
-		}else{
-			$this->viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
+		$this -> viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
+		if (!isset($this -> viewBag['article'])) {
+			$this -> addNotification(new Notification("error", "Something went wrong. We cannot display you article right now."));
 		}
-		$this->addNotification(new Notification("info", "Well that's cool!"));
-		
-		$this -> renderView($this->viewBag);
+		$this ->addNotification(new Notification("info", "Some text"));
+		$this -> renderView($this -> viewBag);
+	}
+
+	public function like() {
+		if ($this -> modelManager -> vote($this -> uriParams[2], CurrentUser::getUser()-> userId, "positive")) {
+			$this -> addNotification(new Notification('info', "Up one vote."));
+		} else {
+			$this -> addNotification(new Notification('warn', "You can't vote twice."));
+		}
+		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
+		$this -> renderView($this -> viewBag);
+	}
+
+	public function dislike() {
+		if ($this -> modelManager -> vote($this -> uriParams[2], CurrentUser::getUser()-> userId, "negative")) {
+			$this -> addNotification(new Notification('info', "Down one vote."));
+		} else {
+			$this -> addNotification(new Notification('warn', "You can't vote twice."));
+		}
+		$this ->viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
+		$this -> renderView($this -> viewBag);
 	}
 
 	public function index() {
-		$this->viewBag['all'] = $this -> modelManager -> getById();
-		$this -> renderView($this->viewBag);
+		$this -> viewBag['all'] = $this -> modelManager -> getById();
+		$this -> renderView($this -> viewBag);
 	}
 
 }

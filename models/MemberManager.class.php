@@ -5,27 +5,14 @@ class MemberManager extends DataManager {
 	 *
 	 * @var array
 	 */
-	public $memberMapping = array('userId' => 'id', 'role' => 'role');
+	public function __construct() {
+		$this -> objMapper = new ObjectMapper();
+	}
 
 	public function authenticateMember($member) {
 		$result = $this -> query("SELECT `id`, `role` FROM `users` WHERE `id` = ? AND `password` = ?", array($member -> userId, $member -> password));
-		return $this -> toSingleObject($result);
+		$member = $this -> toSingleObject($this -> objMapper -> toMembers($result));
+		$member -> authenticate();
+		return $member;
 	}
-
-	protected function toObjects($data) {
-
-		$members = array();
-		$values = array_keys($this -> memberMapping);
-
-		for ($i = 0; $i < count($data); $i++) {
-			$member = new Member();
-			foreach ($values as $memberValue) {
-				$member -> {$memberValue} = $data[$i][$this -> memberMapping[$memberValue]];
-			}
-			$member-> authenticate();
-			array_push($members, $member);
-		}
-		return $members;
-	}
-
 }
