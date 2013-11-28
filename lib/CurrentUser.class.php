@@ -1,7 +1,8 @@
 <?php
 class CurrentUser {
 
-	private static $userRolesWeight = array('reader' => 0, 'subscriber' => 2, 'writer' => 4, 'editor' => 6, 'publisher' => 8);
+	private static $userRolesWeight;
+	
 	private function __construct() {
 	}
 
@@ -12,7 +13,9 @@ class CurrentUser {
 	public static function getUser() {
 		return $_SESSION['user'];
 	}
-
+	public static function hasSubscriberAccess(){
+		return self::hasAccess('subscriber');
+	}
 	public static function hasWriterAccess() {
 		return self::hasAccess('writer');
 	}

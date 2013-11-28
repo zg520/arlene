@@ -7,9 +7,11 @@ class ArticleManager extends DataManager {
 	}
 
 	/**
-	 * Mapping rules for creating article object.
+	 * Fetches articles.
 	 *
-	 * @var array
+	 * @param string $id The article Id.
+	 * @param string $status The status of the article
+	 * @return Article The article from the database or null.
 	 */
 	public function getById($id, $status = "published") {
 		if ($status == null) {
@@ -24,6 +26,7 @@ class ArticleManager extends DataManager {
 		if (count($result) > 0) {
 			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
 			$article -> writers = $this -> getArticleWriters($article -> id);
+			$article -> publicComments = $this -> getArticleComments($article -> id);
 			$article -> likes = $this -> getArticleLikesOrDislikes($article -> id, "positive");
 			$article -> dislikes = $this -> getArticleLikesOrDislikes($article -> id, "negative");
 			return $article;
@@ -47,10 +50,28 @@ class ArticleManager extends DataManager {
 	}
 
 	public function addEditorCommentToId($id, $editorId, $comment) {
-		$insertArticleSql = "INSERT into `editorials` (`article_id`, `user_id`, `comment`) VALUES(:id, :editorId, :comment)";
+		$insertArticleSql = "INSERT into `articleedits` (`article_id`, `user_id`, `comment`) VALUES(:id, :editorId, :comment)";
 		$articleId = $this -> upsert($insertArticleSql, array("articleId" => $id, "editorId" => $editorId, "comment" => $comment));
 	}
-
+	
+	/**
+	 * Adds a user comment to an article.
+	 * @access public
+	 * @param string $id The id of the article to add a comment to.
+	 * @param string $userId The id of the user adding the comment.
+	 * @param string $comment The comment to be added to the article.
+	 * @return true if the operation was successful
+	 */
+	public function addUserCommentToId($id, $userId, $comment) {
+		$insertArticleSql = "INSERT into `comments` (`article_id`, `user_id`, `comment`) VALUES(:articleId, :userId, :comment)";
+		$commentId = $this -> upsert($insertArticleSql, array("articleId" => $id, "userId" => $userId, "comment" => $comment));
+		if($commentId != null){
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public function changeStatus($id, $editorId, $newStatus) {
 		$insertArticleSql = "INSERT into `articles` WHERE `id` = :id (`status`) VALUES(:status)";
 		$articleId = $this -> upsert($insertArticleSql, array("id" => $id, "status" => $newStatus));
@@ -119,13 +140,36 @@ class ArticleManager extends DataManager {
 		$writers = $this -> query($writerSql, array('articleId' => $id));
 		return $this -> objMapper -> toMembers($writers);
 	}
-
+	
+	public function getArticleComments($id) {
+		$commentSql = "SELECT `user_id`, `comment`, `date_posted` FROM `comments` WHERE `article_id` = :articleId ORDER BY `date_posted` DESC";
+		$comments = $this -> query($commentSql, array('articleId' => $id));
+		return $this -> objMapper -> toComments($comments);
+	}
+	
+	/**
+	 * Gets the number of article's likes or dislikes.
+	 * 
+	 * @access public
+	 * @param string $id The id of the article.
+	 * @param string $voteType The type of vote. "Positive" or "Negative".
+	 * @return int The number of likes or dislikes.
+	 */
 	public function getArticleLikesOrDislikes($id, $voteType) {
 		$sql = "SELECT Count(*) FROM `articlelikes` WHERE `article_id` = :articleId AND `vote` = :vote";
 		$result = $this -> query($sql, array('articleId' => $id, 'vote' => $voteType));
 		return $result[0][0];
 	}
-
+	
+	/**
+	 * Adds a user vote to an article.
+	 * 
+	 * @access public
+	 * @param string $id The id of the article.
+	 * @param string $userId The id of the user.
+	 * @param string $voteType The type of vote to be added to the article.
+	 * @return true if the operation was successful.
+	 */
 	public function vote($id, $userId, $voteType) {
 		$sql = "SELECT vote FROM `articlelikes` WHERE `article_id` = :id AND `user_id` = :userId";
 		$params = array('id' => $id, 'userId' => $userId);

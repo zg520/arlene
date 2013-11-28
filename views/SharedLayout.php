@@ -12,21 +12,19 @@
 		</head>
 	</head>
 	<body>
-		<div id="header">
+		<header id="header">
 			<?php
 			require ('/views/SharedHeader.php');
 			?>
-		</div>
+		</header>
 			<?php
 			require ('/views/SharedNotifications.php');
 			?>
-		<div id="wrapper">
+		<main id="wrapper">
 			<?php
 			require ($this -> viewFile);
 			?>
-		</div>
-		<div id="footer" >
-			Copyright &#169 2013 University Of York ghoul IAPT designer. All rights reserved.
-		</div>
+		</main>
+		<footer id="footer">Copyright &#169 2013 University Of York ghoul IAPT designer. All rights reserved.</footer>
 	</body>
 </html>

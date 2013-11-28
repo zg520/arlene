@@ -8,6 +8,7 @@ class ObjectMapper{
 	private $articleMapping = array('id' => 'id', 'article_id' => 'id', 'title' => 'title', 'text_body' => 'body', 'cover_uri' => 'coverUrl', 'likes' => 'likes', 'dislikes' => 'dislikes', 'publish_date' => 'publishDate', 'user_id' => 'writers', 'status' => 'status');
 	private $memberMapping = array('id'=>'userId', 'user_id'=>'userId', 'role'=> 'role');
 	private $reviewMapping = array();
+	private $commentMapping = array('user_id' => 'userId', 'date_posted' => 'datePublished', 'comment' => 'comment');
 	
 	public function toReviews($data){
 		return $this->toObjects('review', $data);
@@ -20,6 +21,9 @@ class ObjectMapper{
 	}
 	public function toArticles($data){
 		return $this-> toObjects('article', $data);
+	}
+	public function toComments($data){
+		return $this-> toObjects('comment', $data);
 	}
 	private function toObjects($class, $data) {
 		$objMapping = $this->{strtolower($class) . 'Mapping'};

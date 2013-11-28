@@ -9,10 +9,10 @@ class AdminController extends Controller {
 		$this -> articleManager = new ArticleManager();
 		$this -> columnManager = new ColumnManager();
 		
-		$this -> authorizationMapping['changeUserType'] = 'publisher';
-		$this -> authorizationMapping['editArticle'] = 'editor';
-		$this -> authorizationMapping['addArticle'] = 'writer';
-		$this -> authorizationMapping['addColumn'] = 'writer';
+		$this -> authorizationMapping['changeusertype'] = 'publisher';
+		$this -> authorizationMapping['editarticle'] = 'editor';
+		$this -> authorizationMapping['addarticle'] = 'writer';
+		$this -> authorizationMapping['addcolumn'] = 'writer';
 		$this -> authorizationMapping['index'] = 'subscriber';
 	}
 
