@@ -10,7 +10,6 @@ abstract class Controller {
 		$this -> action = $action;
 		$this -> uriParams = $uriParams;
 		$this -> viewBag = array();
-		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 	}
 
 	public function execute() {
@@ -34,10 +33,13 @@ abstract class Controller {
 		$_SESSION['notifications'] -> enqueue(new Notification($type, $text));
 	}
 
-	protected function renderView($viewBag, $isRedirect = false) {
+	protected function renderView($isRedirect = false) {
 		$controllerName = get_class($this);
 		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
 		if ($isRedirect) {
+			if(empty($this -> viewBag['redirectUri'])){
+				$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
+			}
 			require (ROOT . DS . 'views' . DS . 'SharedRedirect.php');
 		} else {
 			require (ROOT . DS . 'views' . DS . 'SharedLayout.php');

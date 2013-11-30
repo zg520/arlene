@@ -55,6 +55,9 @@ $(function() {
 		$('#title').val($('#articleTitle').text());
 		$('#contents').val($('#articleText').text());
 		$('#imgUrl').val($('#articleImage').attr('src'));
+		$('#extraFields').load('/views/SharedArticleStatusDropdown.php', function(){	
+				$('#statusMenu option[value="' + $('#articleStatus').attr('title') +'"]').attr('selected','selected');
+			});
 		if ($('#articleTopic').length > 0) {
 			$('#topic').val($('#articleTopic').text());
 			if ($('#articleRating').length > 0) {
@@ -76,9 +79,6 @@ $(function() {
 			}
 		} else {
 			$('#add-new-form').attr('action', '/edit/article');
-			$('#extraFields').load('/views/SharedArticleStatusDropdown.php', function(){	
-				$('#statusMenu option[value="' + $('#articleStatus').attr('title') +'"]').attr('selected','selected');
-			});
 			$('#rating-field').attr("disabled", true);
 			$('#rating-field').hide();
 			$('#topic-field').attr("disabled", true);

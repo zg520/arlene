@@ -19,18 +19,18 @@ class AdminController extends Controller {
 
 	public function viewMembers(){
 		$this->viewBag['members'] = $this -> memberManager -> getAllMembers();
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 	public function addArticle() {
 		$this -> articleManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],  CurrentUser::getUser() -> userId);
 		$this -> addNotification(new Notification("info", "Your article has been added successfully :)"));
-		$this -> renderView($this -> viewBag, true);
+		$this -> renderView(true);
 	}
 
 	public function addColumn() {
 		$this -> columnManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],$_POST['topic'], CurrentUser::getUser()-> userId);
 		$this -> addNotification(new Notification("info", "Your column article has been added successfully :)"));
-		$this -> renderView($this -> viewBag, true);
+		$this -> renderView(true);
 	}
 
 	public function index() {
@@ -39,7 +39,7 @@ class AdminController extends Controller {
 		$this -> viewBag['underReview'] = $this -> articleManager -> getWriterArticles($currentUser -> userId, "under_review");
 		$this -> viewBag['submitted'] = $this -> articleManager -> getWriterArticles($currentUser -> userId, "submitted");
 		$this -> viewBag['published'] = $this -> articleManager -> getWriterArticles($currentUser -> userId, "published");
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 
 }

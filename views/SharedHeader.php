@@ -1,7 +1,7 @@
 <div class="nav">
 	<ul>
 		<?php if(CurrentUser::getUser()->isAuthenticated()):?>
-		<li><span style="float:left"> Hello	<?php echo CurrentUser::getUser()->userId; ?>
+		<li><span style="float:left"> Hello	<span id="userInfo" title="<?php echo CurrentUser::getUser()->role; ?>"><?php echo CurrentUser::getUser()->userId; ?></span>
 		</span></li>
 		<?php endif; ?>
 		

@@ -10,8 +10,8 @@ require ('/views/SharedManageMenu.php');
 		</span>
 	</header>
 	
-	<h2>Members (<?php echo count($viewBag['members'])?>)</h2>
-		<?php foreach($viewBag['members'] as $item) { ?>
+	<h2>Members (<?php echo count($this->viewBag['members'])?>)</h2>
+		<?php foreach($this->viewBag['members'] as $item) { ?>
 			<div class="memberInfo">
 				<p title="<?php echo $item -> role ?>"><?php echo $item -> userId ?> 
 					 <?php require(ROOT . DS . 'views' . DS . 'SharedMemberTypeDropdown.php');?></p>

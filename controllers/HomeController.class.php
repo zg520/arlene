@@ -7,11 +7,10 @@ class HomeController extends Controller {
 	}
 
 	public function index() {
-		$viewBag = array();
-		$viewBag['recommended'] = $this -> modelManager -> getRecommended(5, 0);
-		$viewBag['newest'] = $this -> modelManager -> getNewest(5, 0);
-		$viewBag['popular'] = $this -> modelManager -> getRecommended(5, 0);
-		$this -> renderView($viewBag);
+		$this -> viewBag['recommended'] = $this -> modelManager -> getRecommended(5, 0);
+		$this -> viewBag['newest'] = $this -> modelManager -> getNewest(5, 0);
+		$this -> viewBag['popular'] = $this -> modelManager -> getRecommended(5, 0);
+		$this -> renderView();
 	}
 
 }

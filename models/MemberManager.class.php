@@ -9,10 +9,13 @@ class MemberManager extends DataManager {
 		$members = $this -> query("SELECT `id`, `role` FROM `users`");
 		return $this -> objMapper -> toMembers($members);
 	}
-	public function authenticateMember($member) {
-		$result = $this -> query("SELECT `id`, `role` FROM `users` WHERE `id` = ? AND `password` = ?", array($member -> userId, $member -> password));
-		$member = $this -> toSingleObject($this -> objMapper -> toMembers($result));
-		$member -> authenticate();
-		return $member;
+	public function authenticateMember($id, $password) {
+		$result = $this -> query("SELECT `id`, `role` FROM `users` WHERE `id` = ? AND `password` = ?", array($id, $password));
+		if(count($result[0]) > 0){ 
+			$member = $this -> toSingleObject($this -> objMapper -> toMembers($result));
+			$member -> authenticate();
+			return $member;
+		}
+		return false;
 	}
 }

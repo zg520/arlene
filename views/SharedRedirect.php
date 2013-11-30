@@ -1,4 +1,4 @@
 <?php
-header("Location: " . $viewBag['redirectUri']);
+header("Location: " . $this -> viewBag['redirectUri']);
 exit ;
 ?>

@@ -5,9 +5,9 @@ class ErrorController extends Controller {
 	}
 
 	public function unauthorized() {
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 	public function badUrl(){
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 }

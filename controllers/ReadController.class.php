@@ -4,7 +4,6 @@ class ReadController extends Controller {
 	public function __construct($action, $uriParams) {
 		parent::__construct($action, $uriParams);
 		$this -> modelManager = new ArticleManager();
-
 		$this -> authorizationMapping = array('index' => 'reader', 'article' => 'reader', 'like' => 'subscriber', 'dislike' => 'subscriber', 'comment' => 'subscriber');
 	}
 
@@ -14,46 +13,43 @@ class ReadController extends Controller {
 			$this -> addNotification(new Notification("error", "Something went wrong. We cannot display you article right now."));
 		}
 		
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 
 	public function like() {
 		if ($this -> modelManager -> vote($this -> uriParams[2], CurrentUser::getUser() -> userId, "positive")) {
-			$this -> addNotification(new Notification('info', "Up one vote."));
+			$this -> addNotification('info', "Up one vote.");
 		} else {
-			$this -> addNotification(new Notification('warn', "You can't vote twice."));
+			$this -> addNotification('warn', "You can't vote twice.");
 		}
-		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($this -> viewBag, true);
+		$this -> renderView(true);
 	}
 
 	public function dislike() {
 		if ($this -> modelManager -> vote($this -> uriParams[2], CurrentUser::getUser() -> userId, "negative")) {
-			$this -> addNotification(new Notification('info', "Down one vote."));
+			$this -> addNotification('info', "Down one vote.");
 		} else {
-			$this -> addNotification(new Notification('warn', "You can't vote twice."));
+			$this -> addNotification('warn', "You can't vote twice.");
 		}
-		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($this -> viewBag, true);
+		$this -> renderView(true);
 	}
 
 	public function comment() {
 		if (!array_key_exists('comment', $_POST) && !array_key_exists('article_id', $_POST)) {
-			$this -> addNotification(new Notification('warn', 'Upsi.. Daisy.. Something went wrong.'));
-			$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-			$this -> renderView($this -> viewBag, true);
+			$this -> addNotification('warn', 'Upsi.. Daisy.. Something went wrong.');
+			$this -> renderView(true);
 			return;
 		}
 		if(!$this -> modelManager -> addUserCommentToId($_POST['article_id'], CurrentUser::getUser() -> userId, $_POST['comment'])){
 			$this -> addNotification(new Notification('warn', "Something went wrong we couldn't add your comment."));
 		}
 		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
-		$this -> renderView($this -> viewBag, true);
+		$this -> renderView(true);
 	}
 
 	public function index() {
 		$this -> viewBag['all'] = $this -> modelManager -> getById();
-		$this -> renderView($this -> viewBag);
+		$this -> renderView();
 	}
 
 }

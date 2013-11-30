@@ -1,6 +1,6 @@
 <section class="column">
 	<h1>Editor's pick</h1>
-		<?php foreach($viewBag['recommended'] as $item) { ?>
+		<?php foreach($this -> viewBag['recommended'] as $item) { ?>
 		<article class="article-box">
 			<header style="position: relative; height: 230px;">
 				<h1 style="position: absolute; max-width: 300px;" ><?php echo $item -> title; ?></h1>
@@ -15,7 +15,7 @@
 </section>
 <section class="column">
 	<h1>Popular</h1>
-		<?php foreach($viewBag['popular'] as $item) { ?>
+		<?php foreach($this -> viewBag['popular'] as $item) { ?>
 		<article class="article-box">
 			<header style="position: relative; height: 230px;">
 				<h1 style="position: absolute; max-width: 300px;" ><?php echo $item -> title; ?></h1>
@@ -30,7 +30,7 @@
 </section>
 <section class="column">
 	<h1>Hot Now</h1>
-		<?php foreach($viewBag['newest'] as $item) { ?>
+		<?php foreach($this -> viewBag['newest'] as $item) { ?>
 		<article class="article-box">
 			<header style="position: relative; height: 230px;">
 				<h1 style="position: absolute; max-width: 300px;" ><?php echo $item -> title; ?></h1>
