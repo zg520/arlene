@@ -7,6 +7,7 @@ class Article {
 	public $likes;
 	public $dislikes;
 	public $publishDate;
+	public $createdDate;
 	public $publicComments;
 	public $editorComments;
 	public $editor;

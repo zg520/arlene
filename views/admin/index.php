@@ -40,4 +40,3 @@ require ('/views/SharedManageMenu.php');
 		</article>
 		<?php } ?>
 </section>
-

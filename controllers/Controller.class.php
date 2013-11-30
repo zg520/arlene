@@ -10,6 +10,7 @@ abstract class Controller {
 		$this -> action = $action;
 		$this -> uriParams = $uriParams;
 		$this -> viewBag = array();
+		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 	}
 
 	public function execute() {
@@ -29,8 +30,8 @@ abstract class Controller {
 		}
 	}
 
-	protected function addNotification(Notification $notification) {
-		$_SESSION['notifications'] -> enqueue($notification);
+	protected function addNotification($type, $text) {
+		$_SESSION['notifications'] -> enqueue(new Notification($type, $text));
 	}
 
 	protected function renderView($viewBag, $isRedirect = false) {

@@ -28,7 +28,7 @@ class ArticleManager extends DataManager {
 		if (count($result) > 0) {
 			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
 			$article -> writers = $this -> getArticleWriters($article -> id);
-			$article -> publicComments = $this -> getArticleComments($article -> id);
+			$article -> publicComments = $this -> getPublicComments($article -> id);
 			$article -> likes = $this -> getVotes($article -> id, "positive");
 			$article -> dislikes = $this -> getVotes($article -> id, "negative");
 			if($editorCommentsIncluded){
@@ -63,29 +63,25 @@ class ArticleManager extends DataManager {
 		}
 		return null;
 	}
-	public function updateArticle($id, $title, $content, $imgUrl){
-		$insertArticleSql = "UPDATE `articles` SET `title` =:title ,`text_body` = :text_body, `cover_uri` =:cover_uri WHERE `id` = :id";
-		$articleId = Utility::generateArticleId($title);
-		$id = $this -> upsert($insertArticleSql, array("id" => $id, "title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
-		if($id != null){
-			return true;
-		}
-		return false;
-	}
 	
+	/**
+	 * Changes the status of an article.
+	 * 
+	 * @access public
+	 * @param string $id The id of the article to add a comment to.
+	 * @param string $editorId The id of the editor changing the status.
+	 * @param string $newStatus The new status.
+	 * @return true if the operation was successful
+	 */
 	public function changeStatus($id, $editorId, $newStatus) {
 		if($newStatus == "published"){
 			$sql = "INSERT into `publishmetadata` (`article_id`, `user_id`) VALUES(:articleId, :editorId)";
 			$this -> upsert($sql, array("articleId" => $id, "editorId" => $editorId));
 		}else{
-			$result = $this ->query("SELECT COUNT(*) FROM `publishmetadata` WHERE `article_id` = :article_id", 
-								array('article_id' => $id));
-			if($result[0][0] > 0){
 			$this -> query("DELETE FROM `publishmetadata` WHERE `article_id` = :article_id", 
 								array('article_id' => $id));
-			}
 		}
-		$updateStatusSql = "UPDATE `articles` SET `status` = :status WHERE `id` = :id";
+		$updateStatusSql = "UPDATE `articles` SET `status` WHERE `id` = :id";
 		$articleId = $this -> upsert($updateStatusSql, array("id" => $id, "status" => $newStatus));
 
 		if($articleId != null){
@@ -93,21 +89,7 @@ class ArticleManager extends DataManager {
 		}
 		return false;
 	}
-	
-	public function changeRecommendedStatus($id, $isRecommended) {
-		$result = $this ->query("SELECT `recommended` FROM `articles` WHERE `id` = :article_id", 
-								array('article_id' => $id));
-		if($result[0]['recommended'] != $isRecommended){
-			$updateStatusSql = "UPDATE `articles` SET `recommended` = :recommended WHERE `id` = :article_id";
-			$articleId = $this -> upsert($updateStatusSql, array("article_id" => $id, "recommended" => $isRecommended));
 
-			if($articleId != null){
-				return true;
-			}
-		}
-		return false;
-	}
-		
 	/**
 	 * Adds an editor comment to an article.
 	 * 
@@ -144,16 +126,6 @@ class ArticleManager extends DataManager {
 		}
 
 		return false;
-	}
-	
-	public function addNew($title, $content, $imgUrl, $userId) {
-		$insertArticleSql = "INSERT into `articles` (`id`, `title`, `text_body`, `cover_uri`, `type`) VALUES(:id, :title, :text_body, :cover_uri, 'article')";
-		$articleId = Utility::generateArticleId($title);
-		$this -> upsert($insertArticleSql, array("id" => $articleId, "title" => $title, "text_body" => $content, "cover_uri" => $imgUrl));
-		$linkToUserSql = "INSERT into `articlewriters` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";
-		$this -> upsert($linkToUserSql, array("article_id" => $articleId, "user_id" => $userId));
-
-		return true;
 	}
 	
 	/**
@@ -231,7 +203,7 @@ class ArticleManager extends DataManager {
 	 * @param string $id The article id.
 	 * @return array User comments related to the article.
 	 */
-	public function getArticleComments($id) {
+	public function getPublicComments($id) {
 		$commentSql = "SELECT `user_id`, `comment`, `date_posted` FROM `comments` WHERE `article_id` = :articleId ORDER BY `date_posted` DESC";
 		$comments = $this -> query($commentSql, array('articleId' => $id));
 		return $this -> objMapper -> toComments($comments);

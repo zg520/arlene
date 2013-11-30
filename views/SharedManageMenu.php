@@ -4,7 +4,7 @@
 		?>
 		<h2>Manage Users</h2>
 		<li>
-			Elevate User Permissions
+			<a href="/admin/viewmembers"><span></span>Manage Users Permissions</a>
 		</li>
 		<?php endif; ?>
 		<?php if(CurrentUser::hasEditorAccess()):

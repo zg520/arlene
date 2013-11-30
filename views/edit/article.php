@@ -1,27 +1,26 @@
+<script src="/scripts/editContentForm.js"></script>
+<?php
+require (ROOT . DS . 'views' . DS . 'SharedAddNewContentForm.php');
+?>
 <div class="column fullSized">
 	<div id="statusSubmit">
-		<span>Quick Actions <span class="ui-icon ui-icon-circle-triangle-s"></span></span>
-		<form>
-			<input type="radio" name="awaiting_changes" checked="checked" class="ui-helper-hidden-accessible" />
-			<label for="awaiting_changes" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-all"><span class="ui-button-text">Awaiting changes</span></label>
-			<input type="radio" name="submitted" checked="checked" class="ui-helper-hidden-accessible" />
-			<label for="submitted" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-all"><span class="ui-button-text">Submitted</span></label>
-			<input type="radio" name="under_review" checked="checked" class="ui-helper-hidden-accessible" />
-			<label for="under_review" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-all"><span class="ui-button-text">Under Review</span></label>
-			<input type="radio" name="published" checked="checked" class="ui-helper-hidden-accessible" />
-			<label for="published" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-all"><span class="ui-button-text">Published</span></label>
-		</form>
+		<span>Status: <span id="articleStatus" title="<?php echo $viewBag['article'] -> status ?>"><?php echo str_replace("_", " ", $viewBag['article'] -> status) ?> </span></span>
+		<button id="editArticle" class="" style="border-bottom: solid #FF3333">Edit <span class="ui-icon ui-icon-pencil"></span></button>
 	</div>
 	<article>
-  <header>
-    <h1><?php echo $viewBag['article'] -> title; ?></h1>
-    <img src="<?php echo $viewBag['article'] -> coverUrl?>" alt="Cover Image">
-  </header>
-  <p><?php echo $viewBag['article'] -> body; ?></p>
+		<header>
+			<h1 id="articleTitle"><?php echo $viewBag['article'] -> title; ?></h1>
+			<h2 class="hidden" id="articleId"><?php echo $viewBag['article'] -> id; ?></h2>
+			<img id="articleImage" src="<?php echo $viewBag['article'] -> coverUrl?>" alt="Cover Image">
+	</header>
+ 		<p id="articleText"><?php echo $viewBag['article'] -> body; ?></p>
   <footer style="text-align: right">
-  	<p>Published: <time pubdate datetime="<?php echo $viewBag['article'] -> publishDate ;?>"><?php echo $viewBag['article'] -> publishDate ;?></time></p>
-  	<p>Likes: <?php echo $viewBag['article'] -> likes ;?> vs <?php echo $viewBag['article'] -> dislikes ;?> Dislikes</p>
-  	<small>Writers: <?php foreach($viewBag['article'] -> writers as $writer) echo $writer->userId.'/' ; ?></small></footer>
+  	<p>Created: <time pubdate datetime="<?php echo $viewBag['article'] -> publishDate; ?>"><?php echo $viewBag['article'] -> publishDate; ?></time></p>
+  	<p>Likes: <?php echo $viewBag['article'] -> likes; ?> vs <?php echo $viewBag['article'] -> dislikes; ?> Dislikes</p>
+  	<small>Writers: <?php
+	foreach ($viewBag['article'] -> writers as $writer)
+		echo $writer -> userId . '/';
+ ?></small></footer>
   	<?php if(isset($viewBag['article'] -> publicComments)):?>
   <section>
     <h2>Editor Comments</h2>
@@ -42,8 +41,8 @@
     </header>
     	<p><?php echo $comment -> comment; ?></p>
     </article>
-    <?php endforeach;?>
+    <?php endforeach; ?>
   </section>
-  <?php endif;?>
+  <?php endif; ?>
 </article>
 </div>
