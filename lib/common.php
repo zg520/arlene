@@ -74,5 +74,7 @@ function setupSession() {
 		$_SESSION['user'] -> userId = "anonymous";
 		$_SESSION['user'] -> role = "reader";
 	}
-	$_SESSION['notifications'] = new SplQueue();
+	if(empty($_SESSION['notifications'])){
+		$_SESSION['notifications'] = new SplQueue();
+	}
 }

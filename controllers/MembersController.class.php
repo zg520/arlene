@@ -13,7 +13,7 @@ class MembersController extends Controller {
 				$_SESSION['user'] = $member;
 			}
 		} catch(Exception $e) {
-			$this -> addNotification(new Notification('error', "Couldnt authenticate you. Try again."));
+			$this -> addNotification('error', "Couldnt authenticate you. Try again.");
 		}
 		$this -> renderView(true);
 	}

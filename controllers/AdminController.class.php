@@ -23,13 +23,13 @@ class AdminController extends Controller {
 	}
 	public function addArticle() {
 		$this -> articleManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],  CurrentUser::getUser() -> userId);
-		$this -> addNotification(new Notification("info", "Your article has been added successfully :)"));
+		$this -> addNotification("info", "Your article has been added successfully :)");
 		$this -> renderView(true);
 	}
 
 	public function addColumn() {
 		$this -> columnManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],$_POST['topic'], CurrentUser::getUser()-> userId);
-		$this -> addNotification(new Notification("info", "Your column article has been added successfully :)"));
+		$this -> addNotification("info", "Your column article has been added successfully :)");
 		$this -> renderView(true);
 	}
 

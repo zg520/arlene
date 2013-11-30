@@ -13,7 +13,7 @@ class ArticleManager extends DataManager {
 	 * @param string $id The article Id.
 	 * @param string $status The status of the article. Optional parameter with default value of "published".
 	 * @param bool $editorCommentsIncluded Whether to include editor comments when constructing the Article.
-	 * @return Article The article from the database or null.
+	 * @return Article The article from the database or false.
 	 */
 	public function getById($id, $status = "published", $editorCommentsIncluded = false) {
 		if ($status == null) {
@@ -24,10 +24,11 @@ class ArticleManager extends DataManager {
 			$params = array('id' => $id, 'status' => $status);
 		}
 		$result = $this -> query($sql, $params);
-		
-		if (count($result) > 0) {
+		if (count($result) == 1) {
 			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
+			
 			$article -> writers = $this -> getArticleWriters($article -> id);
+			
 			$article -> publicComments = $this -> getArticleComments($article -> id);
 			$article -> likes = $this -> getVotes($article -> id, "positive");
 			$article -> dislikes = $this -> getVotes($article -> id, "negative");
@@ -36,7 +37,7 @@ class ArticleManager extends DataManager {
 			}
 			return $article;
 		}
-		return null;
+		return false;
 	}
 
 	public function getNewest($top = 5, $skip = 0) {
@@ -170,7 +171,7 @@ class ArticleManager extends DataManager {
 	}
 
 	public function getMostLiked($top = 5, $skip = 0) {
-		$sql = "SELECT * FROM `full_articles` INNER JOIN articleLWHERE status = 'published' LIMIT " . $skip . ", " . $top;
+		$sql = "SELECT * FROM `full_articles` INNER JOIN articleLikes WHERE status = 'published' LIMIT " . $skip . ", " . $top;
 		$mostLiked = array();
 		$sql = "SELECT id FROM articles WHERE status = 'published' AND recommended = '1' LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql);

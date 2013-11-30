@@ -83,12 +83,12 @@ class EditController extends Controller {
 	}
 	public function comment(){
 		if (!array_key_exists('comment', $_POST) && !array_key_exists('article_id', $_POST)) {
-			$this -> addNotification(new Notification('warn', 'Upsi.. Daisy.. Something went wrong.'));
+			$this -> addNotification('warn', 'Upsi.. Daisy.. Something went wrong.');
 			$this -> renderView($this -> viewBag, true);
 			return;
 		}
 		if(!$this -> articleManager -> addEditorCommentToId($_POST['article_id'], CurrentUser::getUser() -> userId, $_POST['comment'])){
-			$this -> addNotification(new Notification('warn', "Something went wrong we couldn't add your comment."));
+			$this -> addNotification('warn', "Something went wrong we couldn't add your comment.");
 		}
 		$this -> renderView(true);
 	}

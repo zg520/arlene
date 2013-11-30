@@ -8,7 +8,6 @@ class ObjectMapper{
 	 */
 	private $articleMapping = array(
 							'id' => 'id', 
-							'article_id' => 'id', 
 							'title' => 'title', 
 							'text_body' => 'body', 
 							'cover_uri' => 'coverUrl', 

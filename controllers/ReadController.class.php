@@ -10,7 +10,7 @@ class ReadController extends Controller {
 	public function article() {
 		$this -> viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
 		if (!isset($this -> viewBag['article'])) {
-			$this -> addNotification(new Notification("error", "Something went wrong. We cannot display you article right now."));
+			$this -> addNotification("error", "Something went wrong. We cannot display you article right now.");
 		}
 		
 		$this -> renderView();
@@ -41,7 +41,7 @@ class ReadController extends Controller {
 			return;
 		}
 		if(!$this -> modelManager -> addUserCommentToId($_POST['article_id'], CurrentUser::getUser() -> userId, $_POST['comment'])){
-			$this -> addNotification(new Notification('warn', "Something went wrong we couldn't add your comment."));
+			$this -> addNotification('warn', "Something went wrong we couldn't add your comment.");
 		}
 		$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 		$this -> renderView(true);
