@@ -1,53 +1,48 @@
 <?php
-class ArticleManager extends DataManager {
+class ArticleManager extends ContentManager {
 
-	private $objMapper;
-	
-	public function __construct() {
-		$this -> objMapper = new ObjectMapper();
-	}
 
 	/**
-	 * Fetches bare bone articles.
+	 * Fetches articles by id.
 	 *
 	 * @param string $id The article Id.
 	 * @param string $status The status of the article. Optional parameter with default value of "published".
 	 * @param bool $editorCommentsIncluded Whether to include editor comments when constructing the Article.
-	 * @return Article The article from the database or false.
+	 * @return Article The article from the database or empty.
 	 */
-	public function getById($id, $status = "published", $editorCommentsIncluded = false) {
-		if ($status == null) {
-			$sql = "SELECT * FROM `full_articles` WHERE `id` = :id";
-			$params = array('id' => $id);
-		} else {
-			$sql = "SELECT * FROM `full_articles` WHERE status = :status AND `id` = :id";
-			$params = array('id' => $id, 'status' => $status);
+	public function getArticleById($id, $status = "published", $editorCommentsIncluded = false) {
+		$article = $this -> getById($id, "Article", $status, $editorCommentsIncluded);
+		if(empty($article)){
+			return false;
 		}
-		$result = $this -> query($sql, $params);
-		if (count($result) == 1) {
-			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
-			
-			$article -> writers = $this -> getArticleWriters($article -> id);
-			
-			$article -> publicComments = $this -> getArticleComments($article -> id);
-			$article -> likes = $this -> getVotes($article -> id, "positive");
-			$article -> dislikes = $this -> getVotes($article -> id, "negative");
-			if($editorCommentsIncluded){
-				$article -> editorComments = $this -> getEditorComments($article -> id);
-			}
-			return $article;
-		}
-		return false;
+		return $article;
 	}
 
 	public function getNewest($top = 5, $skip = 0) {
-		$newest = array();
-		$sql = "SELECT id FROM full_articles INNER JOIN publishmetadata ON id = article_id WHERE status = 'published' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		foreach ($result as $row) {
-			array_push($newest, $this -> getById($row['id']));
+		$newest = $this -> getNewestIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getArticleById($row[0]));
 		}
-		return $newest;
+		return array_filter($results);
+	}
+	
+	public function getPopular($top = 5, $skip = 0) {
+		$newest = $this -> getMostPopularIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getArticleById($row[0]));
+		}
+		return array_filter($results);
+	}
+	
+	public function getRecommended($top = 5, $skip = 0) {
+		$newest = $this -> getRecommendedIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getArticleById($row[0]));
+		}
+		return array_filter($results);
 	}
 
 	public function getForUserById($id, $user) {
@@ -181,38 +176,6 @@ class ArticleManager extends DataManager {
 		return $mostLiked;
 	}
 
-	public function getRecommended($top = 5, $skip = 0) {
-		$recommended = array();
-		$sql = "SELECT id FROM articles WHERE status = 'published' AND recommended = '1' LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		foreach ($result as $row) {
-			array_push($recommended, $this -> getById($row['id']));
-		}
-		return $recommended;
-	}
-
-	public function getAll($status, $top = 5, $skip = 0) {
-		$all = array();
-		$sql = "SELECT id FROM `full_articles` WHERE status = :status LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql, array('status' => $status));
-		foreach ($result as $row) {
-			array_push($all, $this -> getById($row['id'], $status));
-		}
-
-		return $all;
-	}
-
-	/**
-	 * Gets the writers of the article.
-	 *
-	 * @param string $id The article id.
-	 * @return array Members elected as writers of the article.
-	 */
-	public function getArticleWriters($id) {
-		$writerSql = "SELECT `user_id` FROM `articlewriters` WHERE `article_id` = :articleId";
-		$writers = $this -> query($writerSql, array('articleId' => $id));
-		return $this -> objMapper -> toMembers($writers);
-	}
 	
 	/**
 	 * Gets the editors comments of the article.

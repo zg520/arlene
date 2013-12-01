@@ -43,8 +43,7 @@ body, html {
 	max-width: 320px;
 }
 .article-box h1 {
-	position: absolute; 
-	max-width: 300px;
+	max-width: 100%;
 	z-index: 10;
 	vertical-align: top;
 	color: white;
@@ -52,7 +51,10 @@ body, html {
 	background: rgb(0, 0, 0); /* fallback color */
 	background: rgba(0, 0, 0, 0.7);
 }
-
+.imageOverlay h1 {
+	position:absolute;
+	max-width: 90%;
+}
 #header {
 	background: -webkit-linear-gradient(bottom, #E0E0E0  , #FFFFFF);
 	background: -moz-linear-gradient(bottom, #E0E0E0  , #FFFFFF);

@@ -56,9 +56,9 @@ abstract class ContentManager extends DataManager {
 								array('article_id' => $id));
 		}
 		$updateStatusSql = "UPDATE `articles` SET `status` WHERE `id` = :id";
-		$articleId = $this -> upsert($updateStatusSql, array("id" => $id, "status" => $newStatus));
+		$contentId = $this -> upsert($updateStatusSql, array("id" => $id, "status" => $newStatus));
 
-		if($articleId != null){
+		if($contentId != null){
 			return true;
 		}
 		return false;
@@ -106,30 +106,31 @@ abstract class ContentManager extends DataManager {
 	 * Fetches bare bone articles.
 	 *
 	 * @param string $id The article Id.
+	 * @param string $contentType The type of content with first letter capitalised and singular.
 	 * @param string $status The status of the article. Optional parameter with default value of "published".
 	 * @param bool $editorCommentsIncluded Whether to include editor comments when constructing the Article.
 	 * @return Article The article from the database or null.
 	 */
-	protected function getById($id, $status = "published", $editorCommentsIncluded = false) {
+	protected function getById($id, $contentType, $status = "published", $editorCommentsIncluded = false) {
 		if ($status == null) {
-			$sql = "SELECT * FROM `full_articles` WHERE `id` = :id";
-			$params = array('id' => $id);
+			$sql = "SELECT * FROM `articles` WHERE `id` = :id and `type` =:type";
+			$params = array('id' => $id, 'type' => strtolower($contentType));
 		} else {
-			$sql = "SELECT * FROM `full_articles` WHERE status = :status AND `id` = :id";
-			$params = array('id' => $id, 'status' => $status);
+			$sql = "SELECT * FROM `articles` WHERE status = :status AND `id` = :id and `type` =:type";
+			$params = array('id' => $id, 'status' => $status, 'type' => strtolower($contentType));
 		}
 		$result = $this -> query($sql, $params);
 		
 		if (count($result) > 0) {
-			$article = $this -> toSingleObject($this -> objMapper -> toArticles($result));
-			$article -> writers = $this -> getArticleWriters($article -> id);
-			$article -> publicComments = $this -> getPublicComments($article -> id);
-			$article -> likes = $this -> getVotes($article -> id, "positive");
-			$article -> dislikes = $this -> getVotes($article -> id, "negative");
+			$content = $this -> toSingleObject($this -> objMapper -> {"to" . $contentType . "s"}($result));
+			$content -> writers = $this -> getArticleWriters($content -> id);
+			$content -> publicComments = $this -> getPublicComments($content -> id);
+			$content -> likes = $this -> getVotes($content -> id, "positive");
+			$content -> dislikes = $this -> getVotes($content -> id, "negative");
 			if($editorCommentsIncluded){
-				$article -> editorComments = $this -> getEditorComments($article -> id);
+				$content -> editorComments = $this -> getEditorComments($content -> id);
 			}
-			return $article;
+			return $content;
 		}
 		return null;
 	}
@@ -143,9 +144,9 @@ abstract class ContentManager extends DataManager {
 	 */
 	protected function getNewestIds($top = 5, $skip = 0) {
 		$newest = array();
-		$sql = "SELECT id FROM `articles` INNER JOIN publishmetadata ON id = article_id WHERE status = 'published' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
+		$sql = "SELECT `id` FROM `articles` INNER JOIN publishmetadata ON `articles`.`id` = `publishmetadata`.`article_id` WHERE status = 'published' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql);
-		return $result[0];
+		return $result;
 	}
 
 	/**
@@ -158,13 +159,13 @@ abstract class ContentManager extends DataManager {
 	protected function getWriterArticlesIds($userId, $status) {
 		$result = $this -> query("SELECT `id` FROM `articlewriters` INNER JOIN `articles` ON `articles`.`id` = `articlewriters`.`article_id` WHERE `user_id` = ? AND `status` = ?", 
 								array($userId, $status));
-		return $result[0];
+		return $result;
 	}
 
 	protected function getMostPopularIds($top = 5, $skip = 0) {
 		$sql = "SELECT `id`, COUNT(`vote`) as `rating` FROM `articles` Right JOIN articlelikes on `articles`.`id` = `articlelikes`.`article_id` WHERE status = 'published' group by `article_id` ORDER BY `rating` DESC LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql);
-		return $result[0];
+		return $result;
 	}
 
 	protected function getRecommendedIds($top = 5, $skip = 0) {
@@ -172,13 +173,13 @@ abstract class ContentManager extends DataManager {
 		$sql = "SELECT id FROM articles WHERE status = 'published' AND recommended = '1' LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql);
 
-		return $result[0];
+		return $result;
 	}
 
 	protected function getAll($status, $type, $top = 5, $skip = 0) {
 		$sql = "SELECT id FROM `articles` WHERE status = :status AND `type` = :type LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql, array('status' => $status, 'type' => $type));
-		return $result[0];
+		return $result;
 	}
 	
 	/**

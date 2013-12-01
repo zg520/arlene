@@ -1,15 +1,26 @@
 <?php
 class ReadController extends Controller {
 	private $modelManager;
+	private $columnManager;
 	public function __construct($action, $uriParams) {
 		parent::__construct($action, $uriParams);
 		$this -> modelManager = new ArticleManager();
-		$this -> authorizationMapping = array('index' => 'reader', 'article' => 'reader', 'like' => 'subscriber', 'dislike' => 'subscriber', 'comment' => 'subscriber');
+		$this -> columnManager = new ColumnManager();
+		$this -> authorizationMapping = array('index' => 'reader', 'article' => 'reader', 'column'=>'reader','like' => 'subscriber', 'dislike' => 'subscriber', 'comment' => 'subscriber');
 	}
 
 	public function article() {
 		$this -> viewBag['article'] = $this -> modelManager -> getById($this -> uriParams[2]);
 		if (!isset($this -> viewBag['article'])) {
+			$this -> addNotification("error", "Something went wrong. We cannot display you article right now.");
+		}
+		
+		$this -> renderView();
+	}
+	
+	public function column() {
+		$this -> viewBag['column'] = $this -> columnManager -> getColumnById($this -> uriParams[2]);
+		if (!isset($this -> viewBag['column'])) {
 			$this -> addNotification("error", "Something went wrong. We cannot display you article right now.");
 		}
 		

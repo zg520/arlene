@@ -18,6 +18,41 @@ class ObjectMapper{
 							'user_id' => 'writers', 
 							'status' => 'status');
 	/**
+	 * Mapping rules for creating column object.
+	 * 
+	 * @access private
+	 * @var array
+	 */
+	private $columnMapping = array(
+							'id' => 'id', 
+							'title' => 'title', 
+							'text_body' => 'body', 
+							'cover_uri' => 'coverUrl', 
+							'likes' => 'likes', 
+							'dislikes' => 'dislikes', 
+							'publish_date' => 'publishDate',
+							'create_time'=>'createDate', 
+							'user_id' => 'writers', 
+							'status' => 'status');
+							
+	/**
+	 * Mapping rules for creating review object.
+	 * 
+	 * @access private
+	 * @var array
+	 */
+	private $reviewMapping = array(
+							'id' => 'id', 
+							'title' => 'title', 
+							'text_body' => 'body', 
+							'cover_uri' => 'coverUrl', 
+							'likes' => 'likes', 
+							'dislikes' => 'dislikes', 
+							'publish_date' => 'publishDate',
+							'create_time'=>'createDate', 
+							'user_id' => 'writers', 
+							'status' => 'status');
+	/**
 	 * Mapping rules for creating member object.
 	 * 
 	 * @access private
@@ -28,7 +63,6 @@ class ObjectMapper{
 							'user_id'=>'userId', 
 							'role'=> 'role');
 							
-	private $reviewMapping = array();
 	
 	/**
 	 * Mapping rules for creating comment object.

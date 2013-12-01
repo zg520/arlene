@@ -1,54 +1,70 @@
 <?php
-class ColumnManager extends DataManager {
+class ColumnManager extends ContentManager {
+
 	/**
-	 * Mapping rules for creating column object.
+	 * Fetches columns by id.
 	 *
-	 * @var array
+	 * @param string $id The column Id.
+	 * @param string $status The status of the article. Optional parameter with default value of "published".
+	 * @param bool $editorCommentsIncluded Whether to include editor comments when constructing the Article.
+	 * @return Column The column from the database or empty.
 	 */
-	public $columnMapping = array('id' => 'id', 'article_id' => 'id', 'title' => 'title', 'text_body' => 'body', 'cover_uri' => 'coverUrl', 'likes' => 'likes', 'dislikes' => 'dislikes', 'publish_date' => 'publishDate', 'writers' => 'writers', 'user_id' => 'writers', 'topic' => 'topic', 'status' => 'status');
+	public function getColumnById($id, $status = "published", $editorCommentsIncluded = false) {
+		$column = $this -> getById($id, "Column", $status, $editorCommentsIncluded);
 
-	public function getById($id, $status = "published") {
-
-		$sql = "SELECT * FROM `full_columns` WHERE status = :status AND `id` = :id";
-		$result = $this -> query($sql, array("id" => $id, "status" => $status));
-		return $this -> toSingleObject($result);
+		if(empty($column)){
+			return false;
+		}
+		$resultTopic = $this -> query("Select `topic` FROM `columnarticles` WHERE `article_id` = :id", array('id' => $id));
+		$column -> topic = $resultTopic[0]['topic'];
+		return $column;
 	}
 
 	public function getForUserById($id, $user) {
-
 		$countRows = "SELECT COUNT(*) FROM `writers` WHERE `user_id` = :user AND `article_id` = :id";
 		$rowCount = $this -> query($countRows, array("id" => $id, "user" => $user));
 		if ($rowCount > 0) {
 			$sql = "SELECT * FROM `full_columns` WHERE `id` = ?";
 			$result = $this -> query($sql, array($id));
-			return $this -> toSingleObject($result);
+			$column = $this -> toSingleObject($result);
+			
 		}
 		return null;
 	}
 
 	public function getNewest($top = 5, $skip = 0) {
-		$sql = "SELECT * FROM `full_columns` WHERE status = 'published' ORDER BY `publish_date` DESC LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		return $this -> toObjects($result);
+		$newest = $this -> getNewestIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getColumnById($row[0]));
+		}
+		return array_filter($results);
 	}
-
+	
+	public function getPopular($top = 5, $skip = 0) {
+		$newest = $this -> getMostPopularIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getColumnById($row[0]));
+		}
+		return array_filter($results);
+	}
+	
+	public function getRecommended($top = 5, $skip = 0) {
+		$newest = $this -> getRecommendedIds($top, $skip);
+		$results = array();
+		foreach ($newest as $row) {
+			array_push($results, $this -> getColumnById($row[0]));
+		}
+		return array_filter($results);
+	}
+	
 	public function getWriterArticles($userId, $status) {
 		$result = $this -> query("SELECT * FROM `writers` INNER JOIN `articles` ON `articles`.`id` = `writers`.`article_id` WHERE `user_id` = ? AND `status` = ?", array($userId, $status));
 
 		return $this -> toObjects($result);
 	}
 
-	public function getAll($top = 5, $skip = 0) {
-		$sql = "SELECT * FROM `full_columns` WHERE status = 'published' LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		return $this -> toObjects($result);
-	}
-
-	public function getRecommended($top = 5, $skip = 0) {
-		$sql = "SELECT * FROM `full_columns` WHERE status = 'published' AND recommended = 'true' LIMIT " . $skip . ", " . $top;
-		$result = $this -> query($sql);
-		return $this -> toObjects($result);
-	}
 
 	public function addNew($title, $content, $imgUrl, $topic, $userId) {
 		$insertArticleSql = "INSERT into `articles` (`title`, `text_body`, `cover_uri`, `type`) VALUES(:title, :text_body, :cover_uri, 'article')";
@@ -58,23 +74,6 @@ class ColumnManager extends DataManager {
 		$linkToUserSql = "INSERT into `writers` (`article_id`, `user_id`) VALUES(:article_id, :user_id)";
 		$this -> upsert($linkToUserSql, array("article_id" => $articleId, "user_id" => $userId));
 		return null;
-	}
-
-	protected function toObjects($data) {
-		$articles = array();
-		$values = array_values($this -> columnMapping);
-		for ($i = 0; $i < count($data); $i++) {
-			$article = new Article();
-			foreach ($values as $articleValue) {
-				$res = array_search($articleValue, $this -> columnMapping);
-				foreach (array($res) as $dbKey) {
-					if (isset($data[$i][$dbKey]))
-						$article -> {$this -> columnMapping[$dbKey]} = $data[$i][$dbKey];
-				}
-			}
-			array_push($articles, $article);
-		}
-		return $articles;
 	}
 
 }
