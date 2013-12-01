@@ -21,7 +21,7 @@ abstract class Controller {
 			return true;
 		} else {
 			if (isset($this -> authorizationMapping[strtolower($this -> action)])) {
-				return userRoleToInt($this -> authorizationMapping[$this -> action]) <= userRoleToInt($userRole) ? true : false;
+				return userRoleToInt($this -> authorizationMapping[strtolower($this -> action)]) <= userRoleToInt($userRole) ? true : false;
 			}
 			else{
 				return false;

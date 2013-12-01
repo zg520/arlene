@@ -18,4 +18,11 @@ class MemberManager extends DataManager {
 		}
 		return false;
 	}
+	public function updateMemberRole($id, $role, $except = null){
+		$result = $this -> upsert("UPDATE `users` SET `role` =:role  WHERE `id` = :id", array('id' => $id ,'role' => $role ));
+		if($result){
+			return true;
+		}
+		return false;
+	}
 }
