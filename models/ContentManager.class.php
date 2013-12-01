@@ -2,7 +2,6 @@
 /**
  * A class providing base functionality for Article, Column and Review management.
  *
- * @package default
  * @author Y6187553
  */
 abstract class ContentManager extends DataManager {
