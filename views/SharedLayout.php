@@ -25,6 +25,6 @@
 			require ($this -> viewFile);
 			?>
 		</main>
-		<footer id="footer">Copyright &#169 2013 University Of York ghoul IAPT designer. All rights reserved.</footer>
+		<footer id="footer">Copyright &#169 2013 University Of York Y6187553 IAPT designer. All rights reserved.</footer>
 	</body>
 </html>

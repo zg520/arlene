@@ -26,7 +26,10 @@ body, html {
 .fullSized {
 	width: 96%;
 }
-
+.boxed{
+	min-width: 1000px;
+	min-height: 250px;
+}
 .article-box {
 	position: relative;
 	margin: 3px 3px 30px 3px;
@@ -40,6 +43,8 @@ body, html {
 	max-width: 320px;
 }
 .article-box h1 {
+	position: absolute; 
+	max-width: 300px;
 	z-index: 10;
 	vertical-align: top;
 	color: white;
