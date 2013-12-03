@@ -10,21 +10,53 @@ class ReadController extends Controller {
 		$this -> reviewManager = new ReviewManager();
 		$this -> authorizationMapping = array('articlesbydate' => 'reader', 'columnsbydate' => 'reader', 'reviewsbydate' => 'reader', 'content'=>'reader','like' => 'subscriber', 'dislike' => 'subscriber', 'comment' => 'subscriber');
 	}
+	
+	/**
+	 * Implements the articlesByDate action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function articlesByDate(){
 		$this -> viewBag['all'] = $this -> articleManager -> getNewest(1000, 0);
 		$this -> viewBag['sort'] = "By Date";
 		$this -> renderView(false, ROOT . DS . "views" . DS . "read" . DS . "SharedViewAllContent.php");
 	}
+	
+	/**
+	 * Implements the columnsByDate action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function columnsByDate(){
 		$this -> viewBag['all'] = $this -> columnManager -> getNewest(1000, 0);
 		$this -> viewBag['sort'] = "By Date";
 		$this -> renderView(false, ROOT . DS . "views" . DS . "read" . DS . "SharedViewAllContent.php");
 	}
+	
+	/**
+	 * Implements the reviewsByDate action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function reviewsByDate(){
 		$this -> viewBag['all'] = $this -> reviewManager -> getNewest(1000, 0);
 		$this -> viewBag['sort'] = "By Date";
 		$this -> renderView(false, ROOT . DS . "views" . DS . "read" . DS . "SharedViewAllContent.php");
 	}
+	
+	/**
+	 * Implements the content action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function content() {
 		$this -> viewBag['content'] = $this -> articleManager -> getArticleById($this -> uriParams[2]);
 		if (!empty($this -> viewBag['content'])) {
@@ -45,6 +77,13 @@ class ReadController extends Controller {
 		}
 	}
 
+	/**
+	 * Implements the like action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function like() {
 		if ($this -> articleManager -> vote($this -> uriParams[2], CurrentUser::getUser() -> userId, "positive")) {
 			$this -> addNotification('info', "Up one vote.");
@@ -54,6 +93,13 @@ class ReadController extends Controller {
 		$this -> renderView(true);
 	}
 
+	/**
+	 * Implements the dislike action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function dislike() {
 		if ($this -> articleManager -> vote($this -> uriParams[2], CurrentUser::getUser() -> userId, "negative")) {
 			$this -> addNotification('info', "Down one vote.");
@@ -62,7 +108,14 @@ class ReadController extends Controller {
 		}
 		$this -> renderView(true);
 	}
-
+	
+	/**
+	 * Implements the comment action of the @see ReadController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function comment() {
 		if (!array_key_exists('comment', $_POST) && !array_key_exists('article_id', $_POST)) {
 			$this -> addNotification('warn', 'Upsi.. Daisy.. Something went wrong.');

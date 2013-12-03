@@ -1,9 +1,43 @@
 <?php
+/**
+ * A class providing functionality for the EditController actions
+ *
+ * @package Common\Controllers
+ */
 class EditController extends Controller {
+	
+	/**
+	 * The article manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ArticleManager
+	 */
 	private $articleManager;
+	
+	/**
+	 * The column manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ColumnManager
+	 */
 	private $columnManager;
+	
+	/**
+	 * The review manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ReviewManager
+	 */
 	private $reviewManager;
 
+	/**
+	 * Initialises default instance of @see EditController class.
+	 * 
+	 * @access public
+	 */
 	public function __construct($action, $uriParams) {
 		parent::__construct($action, $uriParams);
 		$this -> articleManager = new ArticleManager();
@@ -12,6 +46,13 @@ class EditController extends Controller {
 		$this -> authorizationMapping = array('comment' => 'editor', 'columns' => 'editor', 'articles' => 'editor', 'reviews' => 'editor', 'content' => 'writer');
 	}
 
+	/**
+	 * Implements the articles action of the @see EditController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function articles() {
 		$this -> viewBag['awaitingChanges'] = $this -> articleManager -> getAllArticles('awaiting_changes');
 		$this -> viewBag['underReview'] = $this -> articleManager -> getAllArticles('underReview');
@@ -20,6 +61,13 @@ class EditController extends Controller {
 		$this -> renderView();
 	}
 
+	/**
+	 * Implements the content action of the @see EditController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function content() {
 		if (isset($_POST['status']) || isset($_POST['recommended'])) {
 			if (CurrentUser::hasEditorAccess()) {
@@ -78,7 +126,14 @@ class EditController extends Controller {
 			}
 		}
 	}
-
+	
+	/**
+	 * Implements the reviews action of the @see EditController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function reviews() {
 		$this -> viewBag['awaitingChanges'] = $this -> reviewManager -> getAllReviews('awaiting_changes');
 		$this -> viewBag['underReview'] = $this -> reviewManager -> getAllReviews('underReview');
@@ -86,6 +141,13 @@ class EditController extends Controller {
 		$this -> renderView();
 	}
 
+	/**
+	 * Implements the columns action of the @see EditController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function columns() {
 		$this -> viewBag['awaitingChanges'] = $this -> columnManager -> getAllColumns('awaitingChanges');
 		$this -> viewBag['underReview'] = $this -> columnManager -> getAllColumns('underReview');
@@ -93,6 +155,13 @@ class EditController extends Controller {
 		$this -> renderView();
 	}
 
+	/**
+	 * Implements the comment action of the @see EditController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function comment() {
 		if (!array_key_exists('comment', $_POST) && !array_key_exists('article_id', $_POST)) {
 			$this -> addNotification('warn', 'Upsi.. Daisy.. Something went wrong.');
@@ -105,28 +174,66 @@ class EditController extends Controller {
 		$this -> renderView(true);
 	}
 
+	/**
+	 * Checks whether the posted data matches an article.
+	 * 
+	 * @access private
+	 * 
+	 * @return bool True if the @see $_POST contains an article, false otherwise.
+	 */
 	private function isArticle() {
 		return isset($_POST['id']) && isset($_POST['title']) && isset($_POST['contents']) && isset($_POST['imgUrl']) && !isset($_POST['topic']) && !isset($_POST['rating']);
 	}
-
+	
+	/**
+	 * Checks whether the posted data matches an review.
+	 * 
+	 * @access private
+	 * 
+	 * @return bool True if the @see $_POST contains an review, false otherwise.
+	 */
 	private function isReview() {
 		return isset($_POST['id']) && isset($_POST['title']) && isset($_POST['contents']) && isset($_POST['imgUrl']) && isset($_POST['topic']) && isset($_POST['rating']);
 	}
-
+	
+	/**
+	 * Checks whether the posted data matches an column.
+	 * 
+	 * @access private
+	 * 
+	 * @return bool True if the @see $_POST contains an column, false otherwise.
+	 */
 	private function isColumn() {
 		return isset($_POST['id']) && isset($_POST['title']) && isset($_POST['contents']) && isset($_POST['imgUrl']) && isset($_POST['topic']) && !isset($_POST['rating']);
 	}
-
+	
+	/**
+	 * Try to update a content status on POST requests.
+	 * 
+	 * @access private
+	 * 
+	 * @return bool True if any content has been updated, false otherwise.
+	 */
 	private function updateStatus() {
 		if (isset($_POST['status'])) {
 			if ($this -> articleManager -> changeStatus($_POST['id'], CurrentUser::getUser() -> userId, $_POST['status'])) {
 				$this -> addNotification('info', 'Successfully updated status of the article!');
+				return true;
 			} else {
 				$this -> addNotification('error', "Couldn't update the article status. Try again!");
+				return false;
 			}
 		}
+		return false;
 	}
-
+	
+	/**
+	 * Try to update a content recommendation status on POST requests.
+	 * 
+	 * @access private
+	 * 
+	 * @return bool True if any content has been updated, false otherwise.
+	 */
 	private function updateRecommendation() {
 		if (isset($_POST['recommended'])) {
 			if ($this -> articleManager -> changeRecommendedStatus($_POST['id'], $_POST['recommended'] == "true")) {
@@ -135,8 +242,10 @@ class EditController extends Controller {
 				}else{
 					$this -> addNotification('info', 'Successfully removed the content recommendation!');
 				}
+				return true;
 			} else {
 				$this -> addNotification('error', "Couldn't recommend the article. Try again!");
+				return false;
 			}
 		}
 	}

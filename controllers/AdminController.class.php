@@ -1,9 +1,52 @@
 <?php
+/**
+ * A class providing functionality for the AdminController actions
+ *
+ * @package Common\Controllers
+ */
 class AdminController extends Controller {
+	
+	/**
+	 * The article manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ArticleManager
+	 */
 	private $articleManager;
+	
+	/**
+	 * The column manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ColumnManager
+	 */
 	private $columnManager;
+	
+	/**
+	 * The review manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var ReviewManager
+	 */
 	private $reviewManager;
+	
+	/**
+	 * The member manager.
+	 * 
+	 * @access private 
+	 * 
+	 * @var MemberManager
+	 */
 	private $memberMapper;
+	
+	/**
+	 * Initialises default instance of @see AdminController class.
+	 * 
+	 * @access public
+	 */
 	public function __construct($action, $uriParams) {
 		parent::__construct($action, $uriParams);
 		$this -> articleManager = new ArticleManager();
@@ -21,11 +64,26 @@ class AdminController extends Controller {
 		$this -> authorizationMapping['addcolumn'] = 'writer';
 		$this -> authorizationMapping['index'] = 'subscriber';
 	}
-
+	
+	/**
+	 * Implements the viewMembers action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function viewMembers(){
 		$this->viewBag['members'] = $this -> memberManager -> getAllMembers();
 		$this -> renderView();
 	}
+	
+	 /**
+	 * Implements the editMembers action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function editMembers(){
 		if(isset($_POST['ids']) && count($_POST['ids']) == count($_POST['roles'])){
 			for($i = 0; $i < count($_POST['ids']); $i++){
@@ -44,6 +102,14 @@ class AdminController extends Controller {
 		}
 		$this -> renderView(true);
 	}
+	
+	 /**
+	 * Implements the addArticle action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function addArticle() {
 		
 		if($this -> articleManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],  CurrentUser::getUser() -> userId)){
@@ -54,7 +120,13 @@ class AdminController extends Controller {
 		
 		$this -> renderView(true);
 	}
-
+	 /**
+	 * Implements the addColumn action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function addColumn() {
 		if($this -> columnManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],$_POST['topic'], CurrentUser::getUser()-> userId)){
 			$this -> addNotification("info", "Your column article has been added successfully :)");
@@ -65,6 +137,13 @@ class AdminController extends Controller {
 		$this -> renderView(true);
 	}
 	
+	 /**
+	 * Implements the addReview action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function addReview() {
 		if($this -> reviewManager -> addNew($_POST['title'], $_POST['contents'], $_POST['imgUrl'],$_POST['topic'],$_POST['rating'], CurrentUser::getUser()-> userId)){
 			$this -> addNotification("info", "Your column article has been added successfully :)");
@@ -74,36 +153,40 @@ class AdminController extends Controller {
 		
 		$this -> renderView(true);
 	}
-
+	 /**
+	 * Implements the index/default action of the @see HomeController.
+	 * 
+	 * @access public
+	 * 
+	 * @return void
+	 */
 	public function index() {
-		$currentUser = CurrentUser::getUser();
 		$this -> viewBag['awaitingChanges'] = array();
 		$this -> viewBag['underReview'] = array();
 		$this -> viewBag['submitted'] = array();
 		$this -> viewBag['published'] = array();
 		$this -> viewBag['rejected'] = array();
 		
-		$this -> viewBag['awaitingChanges'] = array_merge($this -> viewBag['awaitingChanges'], $this -> articleManager -> getWriterContent($currentUser -> userId, "awaiting_changes"));
-		$this -> viewBag['awaitingChanges'] = array_merge($this -> viewBag['awaitingChanges'], $this -> columnManager -> getWriterContent($currentUser -> userId, "awaiting_changes"));
-		$this -> viewBag['awaitingChanges'] = array_merge($this -> viewBag['awaitingChanges'], $this -> reviewManager -> getWriterContent($currentUser -> userId, "awaiting_changes"));
-		
-		$this -> viewBag['underReview'] = array_merge($this -> viewBag['underReview'], $this -> articleManager -> getWriterContent($currentUser -> userId, "under_review"));
-		$this -> viewBag['underReview'] = array_merge($this -> viewBag['underReview'], $this -> columnManager -> getWriterContent($currentUser -> userId, "under_review"));
-		$this -> viewBag['underReview'] = array_merge($this -> viewBag['underReview'], $this -> reviewManager -> getWriterContent($currentUser -> userId, "under_review"));
-
-		$this -> viewBag['submitted'] = array_merge($this -> viewBag['submitted'], $this -> articleManager -> getWriterContent($currentUser -> userId, "submitted"));
-		$this -> viewBag['submitted'] = array_merge($this -> viewBag['submitted'], $this -> columnManager -> getWriterContent($currentUser -> userId, "submitted"));
-		$this -> viewBag['submitted'] = array_merge($this -> viewBag['submitted'], $this -> reviewManager -> getWriterContent($currentUser -> userId, "submitted"));
-		
-		$this -> viewBag['published'] = array_merge($this -> viewBag['published'], $this -> articleManager -> getWriterContent($currentUser -> userId, "published"));
-		$this -> viewBag['published'] = array_merge($this -> viewBag['published'], $this -> columnManager -> getWriterContent($currentUser -> userId, "published"));
-		$this -> viewBag['published'] = array_merge($this -> viewBag['published'], $this -> reviewManager -> getWriterContent($currentUser -> userId, "published"));
-		
-		$this -> viewBag['rejected'] = array_merge($this -> viewBag['rejected'], $this -> articleManager -> getWriterContent($currentUser -> userId, "rejected"));
-		$this -> viewBag['rejected'] = array_merge($this -> viewBag['rejected'], $this -> columnManager -> getWriterContent($currentUser -> userId, "rejected"));
-		$this -> viewBag['rejected'] = array_merge($this -> viewBag['rejected'], $this -> reviewManager -> getWriterContent($currentUser -> userId, "rejected"));
-		
+		$this -> populateWriterArticles($this -> viewBag['awaitingChanges'], "awaiting_changes");
+		$this -> populateWriterArticles($this -> viewBag['underReview'], "under_review");
+		$this -> populateWriterArticles($this -> viewBag['submitted'], "submitted");
+		$this -> populateWriterArticles($this -> viewBag['published'], "published");
+		$this -> populateWriterArticles($this -> viewBag['rejected'], "rejected");
+	
 		$this -> renderView();
 	}
-
+	
+	/**
+	 * Gets all the writers' content by state.
+	 * 
+	 * @access private 
+	 * 
+	 * @param array &$data Where to add the data to.
+	 * @param string $contentState The state of the content to fetch.
+	 */
+	private function populateWriterArticles(&$currentData, $contentState){
+		$currentData = array_merge($currentData, $this-> articleManager -> getWriterContent(CurrentUser::getUser() -> userId, $contentState));
+		$currentData = array_merge($currentData, $this->columnManager -> getWriterContent(CurrentUser::getUser() -> userId, $contentState));
+		$currentData = array_merge($currentData, $this->reviewManager -> getWriterContent(CurrentUser::getUser() -> userId, $contentState));
+	}
 }

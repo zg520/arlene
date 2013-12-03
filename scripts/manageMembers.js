@@ -1,5 +1,7 @@
 $(function() {
-	
+	$('#revert').on('click', function(){
+		location.reload(false);
+	});
 	var members = new Array();
 	
 	$('.memberInfo').each( function(){
