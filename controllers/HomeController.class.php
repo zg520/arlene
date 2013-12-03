@@ -11,21 +11,33 @@ class HomeController extends Controller {
 
 	public function index() {
 		$this -> viewBag['recommended'] = array();
-		$this -> viewBag['recommended'] = array_merge($this -> viewBag['recommended'], $this -> articleManager -> getRecommended());
-		$this -> viewBag['recommended'] = array_merge($this -> viewBag['recommended'], $this -> columnManager -> getRecommended());
-		$this -> viewBag['recommended']= array_merge($this -> viewBag['recommended'],  $this -> reviewManager -> getRecommended());
+		$this -> getRecommendedContent($this -> articleManager, $this -> viewBag['recommended']);
+		$this -> getRecommendedContent($this -> columnManager, $this -> viewBag['recommended']);
+		$this -> getRecommendedContent($this -> reviewManager, $this -> viewBag['recommended']);
 		
 		$this -> viewBag['newest'] = array();
-		$this -> viewBag['newest'] = array_merge($this -> viewBag['newest'], $this -> articleManager -> getNewest());
-		$this -> viewBag['newest'] = array_merge($this -> viewBag['newest'], $this -> columnManager -> getNewest());
-		$this -> viewBag['newest']= array_merge($this -> viewBag['newest'],  $this -> reviewManager -> getNewest());
-		
+		$this -> getNewestContent($this -> articleManager, $this -> viewBag['newest']);
+		$this -> getNewestContent($this -> columnManager, $this -> viewBag['newest']);
+		$this -> getNewestContent($this -> reviewManager, $this -> viewBag['newest']);
+
 		$this -> viewBag['popular'] = array();
-		$this -> viewBag['popular'] = array_merge($this -> viewBag['popular'], $this -> articleManager -> getPopular());
-		$this -> viewBag['popular'] = array_merge($this -> viewBag['popular'], $this -> columnManager -> getPopular());
-		$this -> viewBag['popular']= array_merge($this -> viewBag['popular'],  $this -> reviewManager -> getPopular());
+		$this -> getPopularContent($this -> articleManager, $this -> viewBag['popular']);
+		$this -> getPopularContent($this -> columnManager, $this -> viewBag['popular']);
+		$this -> getPopularContent($this -> reviewManager, $this -> viewBag['popular']);
 		
 		$this -> renderView();
 	}
-
+	
+	/**
+	 * 
+	 */
+	private function getRecommendedContent($manager, &$currentData){
+		$currentData = array_merge($currentData, $manager-> getRecommended());
+	}
+	private function getPopularContent($manager, &$currentData){
+		$currentData = array_merge($currentData, $manager-> getPopular());
+	}
+	private function getNewestContent($manager, &$currentData){
+		$currentData = array_merge($currentData, $manager-> getNewest());
+	}
 }

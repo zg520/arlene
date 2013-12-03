@@ -1,4 +1,9 @@
 <?php
+/**
+ * A class providing methods to convert data source array's to objects.
+ *
+ * @package Common\Model
+ */
 class ObjectMapper{
 	/**
 	 * Mapping rules for creating article object.
@@ -75,26 +80,87 @@ class ObjectMapper{
 							'date_posted' => 'datePublished', 
 							'comment' => 'comment');
 	
+	/**
+	 * Converts data array to an array of @see Review objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access public 
+	 * 
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of @see Review objects.
+	 */
 	public function toReviews($data){
 		return $this->toObjects('review', $data);
 	}
-	
+
+	/**
+	 * Converts data array to an array of @see Column objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access public 
+	 * 
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of @see Column objects.
+	 */
 	public function toColumns($data){
 		return $this->toObjects('column', $data);
 	}
-
+	
+	/**
+	 * Converts data array to an array of @see Member objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access public 
+	 * 
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of @see Member objects.
+	 */
 	public function toMembers($data){
 		return $this->toObjects('member', $data);
 	}
 	
+	/**
+	 * Converts data array to an array of @see Article objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access public 
+	 * 
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of @see Article objects.
+	 */
 	public function toArticles($data){
 		return $this-> toObjects('article', $data);
 	}
 
+	/**
+	 * Converts data array to an array of @see Comment objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access public 
+	 * 
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of @see Comment objects.
+	 */
 	public function toComments($data){
 		return $this-> toObjects('comment', $data);
 	}
 
+	/**
+	 * Converts data array to an array of objects.
+	 * Follows the mappings specified in the respective object mapping variable.
+	 *
+	 * @access private 
+	 * 
+	 * @param string $class The class name that we want to convert to. Lowercase.
+	 * @param array $data The data returned from the data source.
+	 * 
+	 * @return array of objects.
+	 */
 	private function toObjects($class, $data) {
 		$objMapping = $this->{strtolower($class) . 'Mapping'};
 
