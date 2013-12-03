@@ -30,6 +30,21 @@ body, html {
 	min-width: 1000px;
 	min-height: 250px;
 }
+.wide{
+	width:960px;
+}
+.left{
+	float: left;
+	width: 300px
+}
+.right{
+	float: right;
+	width: 600px;	
+	padding-top: 1em;
+}
+.clear {
+	clear: both;
+}
 .article-box {
 	position: relative;
 	margin: 3px 3px 30px 3px;

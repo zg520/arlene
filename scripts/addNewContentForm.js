@@ -29,6 +29,7 @@ $(function() {
 		}
 	}
 	function checkTopics(element, topics){
+
 		if(element == undefined || element.val() == undefined){
 			updateTips(name + ' cannot be empty.');
 			return false;
@@ -37,7 +38,9 @@ $(function() {
 		if(topics.indexOf(topic) == -1){
 			element.addClass('ui-state-error');
 			updateTips('Allowed values for topics are: ' + topics.join());
+			return false;
 		}
+		return true;
 	}
 	$('#addNewForm-div').dialog({
 		autoOpen : false,

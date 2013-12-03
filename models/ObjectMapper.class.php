@@ -59,6 +59,7 @@ class ObjectMapper{
 	 * @var array
 	 */					
 	private $memberMapping = array(
+							'id'=> 'userId',
 							'user_id' => 'userId', 
 							'role'=> 'role');
 							
