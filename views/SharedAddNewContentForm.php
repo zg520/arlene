@@ -4,7 +4,7 @@
 		<fieldset>
 			<input type="text" id="id" name="id" class="hidden" readonly/>
 			<div id="title-field">
-				<label for="title" style="display: block;" autofocus>title</label>
+				<label for="title" style="display: block;" autofocus>Title</label>
 				<input type="text" id="title" name="title" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
 			</div>
 			<div id="imgUrl-field">
@@ -16,7 +16,7 @@
 				<input type="text" name="topic" id="topic" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
 			</div>
 			<div id="rating-field">
-				<label for="topic" style="display: block;">Rating</label>
+				<label for="rating" style="display: block;">Rating</label>
 				<input type="radio" name="rating" value="1" title="Extremely bad">
 				Extremely bad</input>
 				<input type="radio" name="rating" value="2" title="Poor">

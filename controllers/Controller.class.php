@@ -33,9 +33,14 @@ abstract class Controller {
 		$_SESSION['notifications'] -> enqueue(new Notification($type, $text));
 	}
 
-	protected function renderView($isRedirect = false) {
-		$controllerName = get_class($this);
-		$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
+	protected function renderView($isRedirect = false, $customViewFile = false) {
+		if(empty($customViewFile)){
+			$controllerName = get_class($this);
+			$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
+		}else{
+			$this -> viewFile =$customViewFile;
+		}
+		
 		if ($isRedirect) {
 			if(empty($this -> viewBag['redirectUri'])){
 				$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];

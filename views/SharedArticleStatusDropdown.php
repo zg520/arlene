@@ -5,4 +5,6 @@
 	<option value="submitted">Submitted</option>
 	<option value="rejected">Rejected</option>
 </select>
-<div style="display: block"><input type="checkbox" name="recommended" value="true"> Recommended</div>
+<div style="display: block">
+	<span><input id="recommended" type="checkbox" name="recommended" value="true"> Recommended</span></div>
+	

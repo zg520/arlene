@@ -36,14 +36,15 @@ body, html {
 	background: #F5FAFA;
 	box-shadow: 10px 10px 5px #888888;
 }
-
+.admin h2{
+	border-bottom: thin solid #363636;
+}
 .article-box img {
 	z-index: 5;
 	vertical-align: top;
 	max-width: 320px;
 }
 .article-box h1 {
-	max-width: 100%;
 	z-index: 10;
 	vertical-align: top;
 	color: white;
@@ -54,6 +55,10 @@ body, html {
 .imageOverlay h1 {
 	position:absolute;
 	max-width: 90%;
+}
+.sideText{
+	display:block;
+	float:right;
 }
 #header {
 	background: -webkit-linear-gradient(bottom, #E0E0E0  , #FFFFFF);
@@ -87,6 +92,15 @@ body, html {
 }
 #statusSubmit input{
 	display: inline-block;
+}
+#addNewForm-div input, textarea{
+	width:100%;
+}
+#addNewForm-div textarea{
+	min-height:250px;
+}
+#addNewForm-div input[type='checkbox']{
+	max-width: 10px;
 }
 .comment textarea{
 	overflow-y: hidden;

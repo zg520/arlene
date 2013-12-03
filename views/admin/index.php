@@ -1,14 +1,14 @@
 <?php
 require ('/views/SharedManageMenu.php');
 ?>
-<section class="column doubleSized">
+<section class="column doubleSized admin">
 	<h1>Overview</h1>
 	<h2>Awaiting changes - <?php echo count($this->viewBag['awaitingChanges'])?></h2>
 		<?php foreach($this->viewBag['awaitingChanges'] as $item) { ?>
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -17,7 +17,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a> 
+				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a> 
 			</div>
 		</article>
 		<?php } ?>
@@ -26,7 +26,16 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
+			</div>
+		</article>
+		<?php } ?>
+		<h2>Rejected - <?php echo count($this->viewBag['rejected'])?></h2>
+		<?php foreach($this->viewBag['rejected'] as $item) { ?>
+		<article class="article-box">
+			<h1><?php echo $item -> title; ?></h1>
+			<div>
+				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -35,7 +44,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/article/<?php echo $item -> id ?>">Preview</a>
+				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>

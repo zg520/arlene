@@ -13,8 +13,8 @@ class ObjectMapper{
 							'cover_uri' => 'coverUrl', 
 							'likes' => 'likes', 
 							'dislikes' => 'dislikes', 
-							'publish_date' => 'publishDate',
-							'create_time'=>'createDate', 
+							'published_date' => 'publishDate',
+							'create_time'=>'createdDate', 
 							'user_id' => 'writers', 
 							'status' => 'status');
 	/**
@@ -30,8 +30,8 @@ class ObjectMapper{
 							'cover_uri' => 'coverUrl', 
 							'likes' => 'likes', 
 							'dislikes' => 'dislikes', 
-							'publish_date' => 'publishDate',
-							'create_time'=>'createDate', 
+							'published_date' => 'publishDate',
+							'create_time'=>'createdDate', 
 							'user_id' => 'writers', 
 							'status' => 'status');
 							
@@ -48,8 +48,8 @@ class ObjectMapper{
 							'cover_uri' => 'coverUrl', 
 							'likes' => 'likes', 
 							'dislikes' => 'dislikes', 
-							'publish_date' => 'publishDate',
-							'create_time'=>'createDate', 
+							'published_date' => 'publishDate',
+							'create_time'=>'createdDate', 
 							'user_id' => 'writers', 
 							'status' => 'status');
 	/**
@@ -59,8 +59,7 @@ class ObjectMapper{
 	 * @var array
 	 */					
 	private $memberMapping = array(
-							'id'=>'userId', 
-							'user_id'=>'userId', 
+							'user_id' => 'userId', 
 							'role'=> 'role');
 							
 	
@@ -97,15 +96,15 @@ class ObjectMapper{
 
 	private function toObjects($class, $data) {
 		$objMapping = $this->{strtolower($class) . 'Mapping'};
+
 		$objs = array();
 		$values = array_values($objMapping);
 		for ($i = 0; $i < count($data); $i++) {
 			$className = ucfirst(strtolower($class));
-			
+
 			$obj = new $className();
 			foreach ($values as $objValue) {
 				$res = array_search($objValue, $objMapping);
-
 				foreach (array($res) as $dbKey) {
 					if (isset($data[$i][$dbKey])){
 						$obj -> {$objMapping[$dbKey]} = $data[$i][$dbKey];

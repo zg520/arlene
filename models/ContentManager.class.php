@@ -5,7 +5,10 @@
  * @author Y6187553
  */
 abstract class ContentManager extends DataManager {
-
+	
+	/**
+	 * Private object responsible for creating other objects.
+	 */
 	private $objMapper;
 	
    /**
@@ -17,14 +20,13 @@ abstract class ContentManager extends DataManager {
 	}
 	
 	/**
-	 * Gets an article for user.
+	 * Gets the content associated with a writer by using their status.
 	 * 
-	 * @access public
-	 * @param string $id The id of the article.
-	 * @param string $userId The id of the user.
-	 * @return true the Content.
+	 * @param string $userId The user id.
+	 * @param string $status The article status.
+	 * @return array The articles with specific status associated with an user.
 	 */
-	public abstract function getForUserById($id, $user);
+	public abstract function getWriterContent($userId, $status);
 	
 	/**
 	 * Gets the writers of the article.
@@ -48,14 +50,13 @@ abstract class ContentManager extends DataManager {
 	 * @return true if the operation was successful
 	 */
 	public function changeStatus($id, $editorId, $newStatus) {
+		$this -> upsert("DELETE FROM `publishmetadata` WHERE `article_id` = :article_id", 
+								array('article_id' => $id));
 		if($newStatus == "published"){
 			$sql = "INSERT into `publishmetadata` (`article_id`, `user_id`) VALUES(:articleId, :editorId)";
 			$this -> upsert($sql, array("articleId" => $id, "editorId" => $editorId));
-		}else{
-			$this -> query("DELETE FROM `publishmetadata` WHERE `article_id` = :article_id", 
-								array('article_id' => $id));
 		}
-		$updateStatusSql = "UPDATE `articles` SET `status` WHERE `id` = :id";
+		$updateStatusSql = "UPDATE `articles` SET `status` = :status WHERE `id` = :id";
 		$contentId = $this -> upsert($updateStatusSql, array("id" => $id, "status" => $newStatus));
 
 		if($contentId != null){
@@ -64,6 +65,23 @@ abstract class ContentManager extends DataManager {
 		return false;
 	}
 	
+	/**
+	 * Changes the recommended flag of a content piece.
+	 * 
+	 * @access public
+	 * @param string $id The id of the article to add a comment to.
+	 * @param bool $isRecommended The whether the content is recommended.
+	 * @return true if the operation was successful
+	 */
+	public function changeRecommendedStatus($id,$isRecommended) {
+		$updateStatusSql = "UPDATE `articles` SET `recommended` = :recommended WHERE `id` = :id";
+		$contentId = $this -> upsert($updateStatusSql, array("id" => $id, "recommended" => $isRecommended));
+
+		if($contentId != null){
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Adds an editor comment to an article.
 	 * 
@@ -115,12 +133,16 @@ abstract class ContentManager extends DataManager {
 		if ($status == null) {
 			$sql = "SELECT * FROM `articles` WHERE `id` = :id and `type` =:type";
 			$params = array('id' => $id, 'type' => strtolower($contentType));
-		} else {
+		} else if($status == "published"){
+			$sql = "SELECT * FROM `articles` INNER JOIN `publishmetadata` on `id` = `article_id` WHERE status = :status AND `id` = :id and `type` =:type";
+			$params = array('id' => $id, 'status' => $status, 'type' => strtolower($contentType));
+		}
+		else{
 			$sql = "SELECT * FROM `articles` WHERE status = :status AND `id` = :id and `type` =:type";
 			$params = array('id' => $id, 'status' => $status, 'type' => strtolower($contentType));
 		}
 		$result = $this -> query($sql, $params);
-		
+
 		if (count($result) > 0) {
 			$content = $this -> toSingleObject($this -> objMapper -> {"to" . $contentType . "s"}($result));
 			$content -> writers = $this -> getArticleWriters($content -> id);
@@ -132,7 +154,7 @@ abstract class ContentManager extends DataManager {
 			}
 			return $content;
 		}
-		return null;
+		return false;
 	}
 	
 	/**
@@ -176,7 +198,7 @@ abstract class ContentManager extends DataManager {
 		return $result;
 	}
 
-	protected function getAll($status, $type, $top = 5, $skip = 0) {
+	protected function getAllIds($status, $type, $top = 5, $skip = 0) {
 		$sql = "SELECT id FROM `articles` WHERE status = :status AND `type` = :type LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql, array('status' => $status, 'type' => $type));
 		return $result;
@@ -229,7 +251,7 @@ abstract class ContentManager extends DataManager {
 	 * @param string $voteType The type of vote to be added to the article.
 	 * @return true if the operation was successful.
 	 */
-	protected function vote($id, $userId, $voteType) {
+	public function vote($id, $userId, $voteType) {
 		$sql = "SELECT vote FROM `articlelikes` WHERE `article_id` = :id AND `user_id` = :userId";
 		$params = array('id' => $id, 'userId' => $userId);
 		$result = $this -> query($sql, $params);

@@ -1,4 +1,3 @@
-<div class="column fullsized boxed"></div>
 <section>
 	<h1>Articles</h1>
 	<section class="column">
@@ -11,7 +10,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/article/<?php echo $item -> id ?>">Read more.</a>
+					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>
@@ -26,7 +25,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/article/<?php echo $item -> id ?>">Read more.</a>
+					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>
@@ -41,7 +40,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/article/<?php echo $item -> id ?>">Read more.</a>
+					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>

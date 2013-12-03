@@ -2,7 +2,13 @@ $(document).ready(function() {
 	$(".previewImage").one("load", function() {
 		var height = $(this).css("height");
 		$(this).parent().css("height", height);
+		$(this).prev().css("max-width", ($(this).css("width").substring(0, $(this).css("width").length -2) - 10) + "px");
+		//if($('.sideText').length > 0){
+		//	var text = $(this).parent().parent().find('.sideText');
+		//	text.offset({left:$(this).offset().left + $(this).width() });
+		//}
 	});
+	
 });
 
 $(function() {

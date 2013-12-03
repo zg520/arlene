@@ -29,10 +29,10 @@
 			<a href="#" id="add-article"><span></span>Add Article</a>
 		</li>
 		<li>
-			<a href="#" id="add-column"><span></span>Add Column</a>
+			<a href="#" id="add-column" data-topics = '<?php echo $this -> viewBag['column-topics'] ?>'><span></span>Add Column</a>
 		</li>
 		<li>
-			<a href="#" id="add-review"><span></span>Add Review</a>
+			<a href="#" id="add-review" data-topics = '<?php echo $this -> viewBag['review-topics'] ?>'><span></span>Add Review</a>
 		</li>
 		<?php endif; ?>
 	</ul>

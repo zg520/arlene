@@ -1,7 +1,7 @@
 <div class="nav">
 	<ul>
 		<?php if(CurrentUser::getUser()->isAuthenticated()):?>
-		<li><span style="float:left"> Hello	<span id="userInfo" title="<?php echo CurrentUser::getUser()->role; ?>"><?php echo CurrentUser::getUser()->userId; ?></span>
+		<li><span style="float:left"> Hello	<span id="userInfo" data-role="<?php echo CurrentUser::getUser()->role; ?>"><?php echo CurrentUser::getUser()->userId; ?></span>
 		</span></li>
 		<?php endif; ?>
 		
@@ -9,10 +9,13 @@
 			<a href="/">Home</a>
 		</li>
 		<li>
-			<a href="/">Columns</a>
+			<a href="/read/articlesByDate">Articles</a>
 		</li>
 		<li>
-			<a href="/">Reviews</a>
+			<a href="/read/columnsByDate">Columns</a>
+		</li>
+		<li>
+			<a href="/read/reviewsByDate">Reviews</a>
 		</li>
 		<?php if(!CurrentUser::getUser()->isAuthenticated()):?>
 		<li>

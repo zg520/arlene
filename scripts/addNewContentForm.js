@@ -1,5 +1,11 @@
 $(function() {
-	var title = $('#title'), contents = $('#contents'), allFields = $([]).add(title).add(contents), tips = $('.validateTips');
+	var title = $('#title'), 
+	contents = $('#contents'), 
+	type = "article",
+	columnTopics = $('#add-column').data('topics'),
+	reviewTopics = $('#add-review').data('topics'),
+	allFields = $([]).add(title).add(contents), 
+	tips = $('.validateTips');
 
 	function updateTips(t) {
 		tips.text(t).addClass('ui-state-highlight');
@@ -22,7 +28,17 @@ $(function() {
 			return true;
 		}
 	}
-
+	function checkTopics(element, topics){
+		if(element == undefined || element.val() == undefined){
+			updateTips(name + ' cannot be empty.');
+			return false;
+		}
+		var topic = element.val();
+		if(topics.indexOf(topic) == -1){
+			element.addClass('ui-state-error');
+			updateTips('Allowed values for topics are: ' + topics.join());
+		}
+	}
 	$('#addNewForm-div').dialog({
 		autoOpen : false,
 		height : 650,
@@ -35,6 +51,12 @@ $(function() {
 				allFields.removeClass('ui-state-error');
 				bValid = bValid && checkWordLength(contents, 'Contents', 100, 2000);
 				bValid = bValid && checkWordLength(title, 'Title', 2, 100);
+				if(type == "column"){
+					bValid = bValid && checkTopics($('#topic'), columnTopics);
+				}
+				if(type == "review"){
+					bValid = bValid && checkTopics($('#topic'), reviewTopics);
+				}
 				if (bValid) {
 					$('#add-new-form').submit();
 					$(this).dialog('close');
@@ -61,8 +83,10 @@ $(function() {
 	});
 	
 	$('#add-column').click(function() {
+		type = "column";
 		$('#add-new-form').attr('action', '/admin/addColumn');
 		$('#topic-field').attr("disabled", false);
+		$('#topic').autocomplete({source: columnTopics});
 		$('#topic-field').show();
 		$('#rating-field').attr("disabled", true);
 		$('#rating-field').hide();
@@ -70,8 +94,10 @@ $(function() {
 		$('#addNewForm-div').dialog('open');
 	});
 	$('#add-review').click(function() {
+		type = "review";
 		$('#add-new-form').attr('action', '/admin/addReview');
 		$('#topic-field').attr("disabled", false);
+		$('#topic').autocomplete({source: reviewTopics});
 		$('#topic-field').show();
 		$('#rating-field').attr("disabled", false);
 		$('#rating-field').show();
