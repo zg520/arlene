@@ -102,5 +102,12 @@ $(function() {
 			$('#addNewForm-div').dialog('option', 'title', 'Edit Article');
 			$('#addNewForm-div').dialog('open');
 		}
+		if($('#articleStatus').data('status') != "awaiting_changes" || $('#articleStatus').data('status') != "under_review"){
+			$('#title').prop("disabled", true);
+			$('#contents').prop("disabled", true);
+			$('#imgUrl').prop("disabled", true);
+			$('#topic-field').prop("disabled", true);
+			$('#rating-field').prop("disabled", true);
+		}
 	});
 });

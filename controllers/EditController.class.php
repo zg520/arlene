@@ -125,6 +125,7 @@ class EditController extends Controller {
 				return;
 			}
 		}
+		$this -> renderView(true);
 	}
 	
 	/**

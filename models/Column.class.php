@@ -3,7 +3,7 @@
  * A class to hold Column information. Extends @see Article.
  *
  * @access default
- * @package Contract
+ * @package Common\Model\Contract
  */
 class Column extends Article {
 	

@@ -3,7 +3,7 @@
  * A class to hold Article content information.
  *
  * @access default
- * @package Contract
+ * @package Common\Model\Contract
  */
 class Article {
 

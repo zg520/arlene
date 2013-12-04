@@ -3,7 +3,7 @@
  * A class to hold comment information.
  *
  * @access default
- * @package Contract
+ * @package Common\Model\Contract
  */
 class Comment {
 	
