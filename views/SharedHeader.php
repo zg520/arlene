@@ -20,8 +20,8 @@
 		<?php if(!CurrentUser::getUser()->isAuthenticated()):?>
 		<li>
 			<a href="#" id="user-login" class="">Login</a>
-			<div id="dialog-form" title="Login">
-				<form id="login-form" action="/members/login" method="POST">
+			<div id="dialog-form">
+				<form id="userForm" method="POST">
 					<fieldset>
 						<label for="name" >user name</label>
 						<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/>
@@ -30,10 +30,16 @@
 					</fieldset>
 				</form>
 			</div>
-			<?php else: ?>
+		</li>
+		<li>
+			<a href="#" id="user-register" class="">Register</a>
+		</li>
+		<?php else: ?>
+		<?php if(CurrentUser:: hasWriterAccess()):?>
 		<li>
 			<a href="/admin">My Content</a>
 		</li>
+		<?php endif; ?>
 		<li>
 		<a href="/members/logout">Logout</a>
 		</li>

@@ -15,7 +15,7 @@
   <p><?php echo $this->viewBag['content'] -> body; ?></p>
   <footer style="text-align: right">
   	<p>Published: <time pubdate datetime="<?php echo $this->viewBag['content'] -> publishDate; ?>"><?php echo $this->viewBag['content'] -> publishDate; ?></time></p>
-  	<p><a href="/read/like/<?php echo $this->viewBag['content'] -> id; ?>">Likes</a> <?php echo $this->viewBag['content'] -> likes; ?> vs <?php echo $this->viewBag['content'] -> dislikes; ?> 
+  	<p><a href="/read/like/<?php echo $this->viewBag['content'] -> id; ?>">Like</a> <?php echo $this->viewBag['content'] -> likes; ?> vs <?php echo $this->viewBag['content'] -> dislikes; ?> 
   		<a href="/read/dislike/<?php echo $this->viewBag['content'] -> id; ?>">Dislike</a></p>
   	<small>Writers: 
   		<?php

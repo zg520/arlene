@@ -52,7 +52,6 @@ class MembersController extends Controller {
 	 * @return void
 	 */
 	public function logout() {
-		$this -> viewBag['user'] = $_SESSION['user'];
 		if (!strncmp(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH), "/admin", strlen($needle))) {
 			$this -> viewBag['redirectUri'] = "/";
 		} else {
@@ -72,10 +71,19 @@ class MembersController extends Controller {
 	 * @return void
 	 */
 	public function register() {
-		$this -> viewBag['user'] = $_SESSION['user'];
-
-		unregisterGlobals();
-		session_destroy();
-		$this -> renderView();
+		if(empty($_POST['name']) && empty($_POST['password'])){
+			$this -> addNotification("error", "Invalid name and password supplied!");
+			$this -> renderView(true);
+			return;
+		}
+		if($this -> modelManager -> create($_POST['name'], $_POST['password'], "subscriber")){
+			$this-> addNotification("info", "Welcome " . $_POST['name'] . "!");
+			$_SESSION['user'] = $this -> modelManager -> authenticateMember($_POST['name'], $_POST['password']);
+			$this -> renderView(true);
+			return;
+		}
+		$this -> addNotification("error", "Registration failed! User already exists.");
+		$this -> renderView(true);
+		return;
 	}
 }

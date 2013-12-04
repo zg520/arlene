@@ -3,10 +3,6 @@ $(document).ready(function() {
 		var height = $(this).css("height");
 		$(this).parent().css("height", height);
 		$(this).prev().css("max-width", ($(this).css("width").substring(0, $(this).css("width").length -2) - 10) + "px");
-		//if($('.sideText').length > 0){
-		//	var text = $(this).parent().parent().find('.sideText');
-		//	text.offset({left:$(this).offset().left + $(this).width() });
-		//}
 	});
 	
 });
@@ -44,7 +40,7 @@ $(function() {
 
 	$("#dialog-form").keypress(function(e) {
 		if (e.keyCode == $.ui.keyCode.ENTER) {
-			$("#login-form").submit();
+			$("#userForm").submit();
 			$(this).dialog("close");
 		}
 	});
@@ -55,7 +51,7 @@ $(function() {
 		modal : true,
 		resizable : false,
 		buttons : {
-			"Login" : function() {
+			"Go" : function() {
 				var bValid = true;
 				allFields.removeClass("ui-state-error");
 
@@ -66,7 +62,7 @@ $(function() {
 				bValid = bValid && checkRegexp(password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9");
 
 				if (bValid) {
-					$("#login-form").submit();
+					$("#userForm").submit();
 					$(this).dialog("close");
 				}
 			},
@@ -80,9 +76,16 @@ $(function() {
 	});
 
 	$("#user-login").click(function() {
+		$('#dialog-form').dialog('option', 'title', 'Login');
+		$('#userForm').attr('action', '/members/login');
 		$("#dialog-form").dialog("open");
 	});
-
+	
+	$("#user-register").click(function() {
+		$('#dialog-form').dialog('option', 'title', 'Register');
+		$('#userForm').attr('action', '/members/register');
+		$("#dialog-form").dialog("open");
+	});
 	$(".ui-state-highlight").click(function() {
 		$(this).hide(0);
 	});
