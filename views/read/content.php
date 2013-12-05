@@ -15,8 +15,8 @@
   <p><?php echo $this->viewBag['content'] -> body; ?></p>
   <footer style="text-align: right">
   	<p>Published: <time pubdate datetime="<?php echo $this->viewBag['content'] -> publishDate; ?>"><?php echo $this->viewBag['content'] -> publishDate; ?></time></p>
-  	<p><a href="/read/like/<?php echo $this->viewBag['content'] -> id; ?>">Like</a> <?php echo $this->viewBag['content'] -> likes; ?> vs <?php echo $this->viewBag['content'] -> dislikes; ?> 
-  		<a href="/read/dislike/<?php echo $this->viewBag['content'] -> id; ?>">Dislike</a></p>
+  	<p><a href="read/like/<?php echo $this->viewBag['content'] -> id; ?>">Like</a> <?php echo $this->viewBag['content'] -> likes; ?> vs <?php echo $this->viewBag['content'] -> dislikes; ?> 
+  		<a href="read/dislike/<?php echo $this->viewBag['content'] -> id; ?>">Dislike</a></p>
   	<small>Writers: 
   		<?php
 		foreach ($this->viewBag['content'] -> writers as $writer)
@@ -26,7 +26,7 @@
   <section class="comment">
     <h2>Comments</h2>
     <?php if(CurrentUser::hasSubscriberAccess()):?>
-    <form method="POST" action="/read/comment">
+    <form method="POST" action="read/comment">
     	<fieldset>
     		<input class="hidden" type="text" name="article_id" value="<?php echo $this->viewBag['content'] -> id ?>" readonly>
     		<textarea name="comment">Leave your comment here.</textarea>

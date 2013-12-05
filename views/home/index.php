@@ -10,7 +10,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
+					<a href="read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>
@@ -25,7 +25,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
+					<a href="read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>
@@ -40,7 +40,7 @@
 				</header>
 				<div>
 					<p><?php echo $item -> getSummary(); ?> </p>
-					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a>
+					<a href="read/content/<?php echo $item -> id ?>">Read more.</a>
 				</div>
 			</article>
 			<?php } ?>

@@ -67,6 +67,7 @@ function notificationsExist() {
 }
 
 function setupSession() {
+	if(session_status() == PHP_SESSION_NONE){
 	session_start();
 	CurrentUser::init();
 	if (!isset($_SESSION['user'])) {
@@ -76,5 +77,6 @@ function setupSession() {
 	}
 	if(empty($_SESSION['notifications'])){
 		$_SESSION['notifications'] = new SplQueue();
+	}
 	}
 }

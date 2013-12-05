@@ -125,7 +125,7 @@ abstract class Controller {
 	protected function renderView($isRedirect = false, $customViewFile = false) {
 		if(empty($customViewFile)){
 			$controllerName = get_class($this);
-			$this -> viewFile = ROOT . DS . 'views' . DS . str_replace('Controller', '', $controllerName) . DS . $this -> action . '.php';
+			$this -> viewFile = ROOT . DS . 'views' . DS . strtolower(str_replace('Controller', '', $controllerName)) . DS . $this -> action . '.php';
 		}else{
 			$this -> viewFile =$customViewFile;
 		}

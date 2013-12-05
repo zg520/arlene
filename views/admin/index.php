@@ -1,5 +1,5 @@
 <?php
-require ('/views/SharedManageMenu.php');
+require (ROOT . DS . 'views' . DS . 'SharedManageMenu.php');
 ?>
 <section class="column doubleSized admin">
 	<h1>Overview</h1>
@@ -8,7 +8,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
+				<a href="edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -17,7 +17,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a> 
+				<a href="edit/content/<?php echo $item -> id ?>">Preview</a> 
 			</div>
 		</article>
 		<?php } ?>
@@ -26,7 +26,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
+				<a href="edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -35,7 +35,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
+				<a href="edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>
@@ -44,7 +44,7 @@ require ('/views/SharedManageMenu.php');
 		<article class="article-box">
 			<h1><?php echo $item -> title; ?></h1>
 			<div>
-				<a href="/edit/content/<?php echo $item -> id ?>">Preview</a>
+				<a href="edit/content/<?php echo $item -> id ?>">Preview</a>
 			</div>
 		</article>
 		<?php } ?>

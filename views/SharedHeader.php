@@ -9,13 +9,13 @@
 			<a href="/">Home</a>
 		</li>
 		<li>
-			<a href="/read/articlesByDate">Articles</a>
+			<a href="read/articlesByDate">Articles</a>
 		</li>
 		<li>
-			<a href="/read/columnsByDate">Columns</a>
+			<a href="read/columnsByDate">Columns</a>
 		</li>
 		<li>
-			<a href="/read/reviewsByDate">Reviews</a>
+			<a href="read/reviewsByDate">Reviews</a>
 		</li>
 		<?php if(!CurrentUser::getUser()->isAuthenticated()):?>
 		<li>
@@ -37,11 +37,11 @@
 		<?php else: ?>
 		<?php if(CurrentUser:: hasWriterAccess()):?>
 		<li>
-			<a href="/admin">My Content</a>
+			<a href="admin">My Content</a>
 		</li>
 		<?php endif; ?>
 		<li>
-		<a href="/members/logout">Logout</a>
+		<a href="members/logout">Logout</a>
 		</li>
 		<?php endif; ?>
 	</ul>

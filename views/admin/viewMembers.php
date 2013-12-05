@@ -1,7 +1,7 @@
 <?php
-require ('/views/SharedManageMenu.php');
+require (ROOT . DS .'views' . DS . 'SharedManageMenu.php');
 ?>
-<script src="/scripts/manageMembers.js"></script>
+<script src="scripts/manageMembers.js"></script>
 <section class="column doubleSized">
 	<header>
 		<h1>Overview</h1>
@@ -11,7 +11,7 @@ require ('/views/SharedManageMenu.php');
 		</span>
 	</header>
 	<h2>Members (<?php echo count($this->viewBag['members'])?>)</h2>
-	<form id="members" action="/admin/editMembers" method="POST">
+	<form id="members" action="admin/editMembers" method="POST">
 		<?php foreach($this->viewBag['members'] as $item) { ?>
 			<div class="memberInfo">
 					<input type="text" name="ids[]" class="userId hidden" value="<?php echo $item -> userId ?>" disabled="disabled" readonly/>

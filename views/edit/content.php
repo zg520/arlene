@@ -1,4 +1,4 @@
-<script src="/scripts/editContentForm.js"></script>
+<script src="scripts/editContentForm.js"></script>
 <?php
 require (ROOT . DS . 'views' . DS . 'SharedAddNewContentForm.php');
 ?>
@@ -30,7 +30,7 @@ require (ROOT . DS . 'views' . DS . 'SharedAddNewContentForm.php');
   <section>
     <h2>Editor Comments</h2>
        <?php if(CurrentUser::hasEditorAccess()):?>
-    	<form class="comment" method="POST" action="/edit/comment">
+    	<form class="comment" method="POST" action="edit/comment">
     	<fieldset>
     		<input class="hidden" type="text" name="article_id" value="<?php echo $this -> viewBag['content'] -> id ?>" readonly>
     		<textarea name="comment">Leave your comment here.</textarea>

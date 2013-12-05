@@ -4,25 +4,25 @@
 		?>
 		<h2>Manage Users</h2>
 		<li>
-			<a href="/admin/viewmembers"><span></span>Manage Users Permissions</a>
+			<a href="admin/viewmembers"><span></span>Manage Users Permissions</a>
 		</li>
 		<?php endif; ?>
 		<?php if(CurrentUser::hasEditorAccess()):
 		?>
 		<h2>Manage Content</h2>
 		<li>
-			<a href="/edit/articles"><span></span>Edit Articles</a>
+			<a href="edit/articles"><span></span>Edit Articles</a>
 		</li>
 		<li>
-			<a href="/edit/columns"><span></span>Edit Columns</a>
+			<a href="edit/columns"><span></span>Edit Columns</a>
 		</li>
 		<li>
-			<a href="/edit/reviews"><span></span>Edit Reviews</a>
+			<a href="edit/reviews"><span></span>Edit Reviews</a>
 		</li>
 		<?php endif; ?>
 		<?php if(CurrentUser::hasWriterAccess()):
 		?>
-		<script src="/scripts/addNewContentForm.js"></script>
+		<script src="scripts/addNewContentForm.js"></script>
 		<?php require('SharedaddNewContentForm.php'); ?>
 		<h2>Create Content</h2>
 		<li>
