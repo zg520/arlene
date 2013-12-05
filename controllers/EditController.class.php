@@ -55,7 +55,7 @@ class EditController extends Controller {
 	 */
 	public function articles() {
 		$this -> viewBag['awaitingChanges'] = $this -> articleManager -> getAllArticles('awaiting_changes');
-		$this -> viewBag['underReview'] = $this -> articleManager -> getAllArticles('underReview');
+		$this -> viewBag['underReview'] = $this -> articleManager -> getAllArticles('under_review');
 		$this -> viewBag['submitted'] = $this -> articleManager -> getAllArticles('submitted');
 
 		$this -> renderView();
@@ -137,7 +137,7 @@ class EditController extends Controller {
 	 */
 	public function reviews() {
 		$this -> viewBag['awaitingChanges'] = $this -> reviewManager -> getAllReviews('awaiting_changes');
-		$this -> viewBag['underReview'] = $this -> reviewManager -> getAllReviews('underReview');
+		$this -> viewBag['underReview'] = $this -> reviewManager -> getAllReviews('under_review');
 		$this -> viewBag['submitted'] = $this -> reviewManager -> getAllReviews('submitted');
 		$this -> renderView();
 	}
@@ -150,8 +150,8 @@ class EditController extends Controller {
 	 * @return void
 	 */
 	public function columns() {
-		$this -> viewBag['awaitingChanges'] = $this -> columnManager -> getAllColumns('awaitingChanges');
-		$this -> viewBag['underReview'] = $this -> columnManager -> getAllColumns('underReview');
+		$this -> viewBag['awaitingChanges'] = $this -> columnManager -> getAllColumns('awaiting_changes');
+		$this -> viewBag['underReview'] = $this -> columnManager -> getAllColumns('under_review');
 		$this -> viewBag['submitted'] = $this -> columnManager -> getAllColumns('submitted');
 		$this -> renderView();
 	}

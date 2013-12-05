@@ -24,7 +24,7 @@ class Router {
 	}
 
 	public function route() {
-		if (!file_exists(ROOT . DS . "controllers" . DS . $this -> controllerName . "Controller.class.php")) {
+		if (!file_exists(ROOT . DS . "controllers" . DS . ucfirst(strtolower($this -> controllerName)) . "Controller.class.php")) {
 			return new ErrorController("badurl", $this -> uriParams);
 		}
 		$class = ucfirst(strtolower($this -> controllerName)) . "Controller";

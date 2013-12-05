@@ -52,8 +52,8 @@ class MembersController extends Controller {
 	 * @return void
 	 */
 	public function logout() {
-		if (!strncmp(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH), "/admin", strlen($needle))) {
-			$this -> viewBag['redirectUri'] = "/";
+		if (strpos(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH), "admin") != -1) {
+			$this -> viewBag['redirectUri'] = "../index.php";
 		} else {
 			$this -> viewBag['redirectUri'] = $_SERVER['HTTP_REFERER'];
 		}

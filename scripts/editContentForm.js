@@ -69,9 +69,9 @@ $(function() {
 		$('#title').val($('#articleTitle').text());
 		$('#contents').val($('#articleText').text());
 		$('#imgUrl').val($('#articleImage').attr('src'));
-		$('#add-new-form').attr('action', '/edit/content');
+		$('#add-new-form').attr('action', 'edit/content');
 		if($('#userInfo').data("role") != "writer"){
-			$('#extraFields').load('/views/SharedArticleStatusDropdown.php', function(){	
+			$('#extraFields').load('views/SharedArticleStatusDropdown.php', function(){	
 					$('#statusMenu option[value="' + $('#articleStatus').data('status') +'"]').attr('selected','selected');
 				});
 		}
@@ -102,7 +102,8 @@ $(function() {
 			$('#addNewForm-div').dialog('option', 'title', 'Edit Article');
 			$('#addNewForm-div').dialog('open');
 		}
-		if($('#articleStatus').data('status') != "awaiting_changes" || $('#articleStatus').data('status') != "under_review"){
+		
+		if($('#articleStatus').data('status') !== "awaiting_changes" && $('#articleStatus').data('status') !== "under_review"){
 			$('#title').prop("disabled", true);
 			$('#contents').prop("disabled", true);
 			$('#imgUrl').prop("disabled", true);
