@@ -77,13 +77,13 @@ $(function() {
 
 	$("#user-login").click(function() {
 		$('#dialog-form').dialog('option', 'title', 'Login');
-		$('#userForm').attr('action', '/members/login');
+		$('#userForm').attr('action', 'members/login');
 		$("#dialog-form").dialog("open");
 	});
 	
 	$("#user-register").click(function() {
 		$('#dialog-form').dialog('option', 'title', 'Register');
-		$('#userForm').attr('action', '/members/register');
+		$('#userForm').attr('action', 'members/register');
 		$("#dialog-form").dialog("open");
 	});
 	$(".ui-state-highlight").click(function() {

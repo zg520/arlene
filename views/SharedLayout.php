@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<head>
-			<base href="http://www-student.cs.york.ac.uk/~Y6187553/iapt/001/" target="_blank">
+			<base href="http://www-student.cs.york.ac.uk/~Y6187553/iapt/001/" target="">
 			<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 			<link href="css/style.css" rel="stylesheet" type="text/css">
 			<link href="css/jquery-ui-1.10.3.custom.css" rel="stylesheet">

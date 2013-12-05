@@ -6,7 +6,7 @@
 		<?php endif; ?>
 		
 		<li>
-			<a href="/">Home</a>
+			<a href="index.php">Home</a>
 		</li>
 		<li>
 			<a href="read/articlesByDate">Articles</a>
