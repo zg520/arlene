@@ -7,7 +7,7 @@
 					<img class="previewImage" src="<?php echo $item -> coverUrl?>" alt="Cover Image" title="<?php echo $item -> title; ?>">
 				</div>
 				<div class="sideText right"><span><?php echo $item -> getSummary(); ?> 
-					<a href="/read/content/<?php echo $item -> id ?>">Read more.</a></span>
+					<a href="read/content/<?php echo $item -> id ?>">Read more.</a></span>
 				</div>
 				<div class="clear"></div>
 			</article>

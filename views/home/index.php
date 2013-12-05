@@ -1,5 +1,5 @@
 <section>
-	<h1>Articles</h1>
+	<h1>Welcome to your Hub</h1>
 	<section class="column">
 		<h1>Editor's pick</h1>
 			<?php foreach($this -> viewBag['recommended'] as $item) { ?>

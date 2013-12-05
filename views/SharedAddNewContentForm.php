@@ -9,7 +9,7 @@
 			</div>
 			<div id="imgUrl-field">
 				<label for="imgUrl" style="display: block;">Image Url</label>
-				<input type="text" name="imgUrl" id="imgUrl" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
+				<input type="url" name="imgUrl" id="imgUrl" class="text ui-widget-content ui-corner-all" style="display: block;" required/>
 			</div>
 			<div id="topic-field">
 				<label for="topic" style="display: block;">Topic</label>

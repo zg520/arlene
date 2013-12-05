@@ -19,7 +19,7 @@
 		</li>
 		<?php if(!CurrentUser::getUser()->isAuthenticated()):?>
 		<li>
-			<a href="#" id="user-login" class="">Login</a>
+			<a href="<?php echo $_GET['path'] ;?>#" id="user-login" class="">Login</a>
 			<div id="dialog-form">
 				<form id="userForm" method="POST">
 					<fieldset>
@@ -32,7 +32,7 @@
 			</div>
 		</li>
 		<li>
-			<a href="#" id="user-register" class="">Register</a>
+			<a href="<?php echo $_GET['path'] ;?>#" id="user-register" class="">Register</a>
 		</li>
 		<?php else: ?>
 		<?php if(CurrentUser:: hasWriterAccess()):?>

@@ -1,12 +1,19 @@
 $(function() {
 	var title = $('#title'), 
-	contents = $('#contents'), 
+	contents = $('#contents'),
+	url = $('#imgUrl'), 
 	type = "article",
 	columnTopics = $('#add-column').data('topics'),
 	reviewTopics = $('#add-review').data('topics'),
 	allFields = $([]).add(title).add(contents), 
 	tips = $('.validateTips');
 
+	function getBaseUrl(){
+		if(location.href.indexOf('#') > -1){
+			return location.href.substring(0, location.href.length -1);
+		}
+		return location.href;
+	}
 	function updateTips(t) {
 		tips.text(t).addClass('ui-state-highlight');
 		setTimeout(function() {
@@ -27,6 +34,19 @@ $(function() {
 		} else {
 			return true;
 		}
+	}
+	
+	function isValidUrl(element){
+		if(element == undefined || element.val() == undefined){
+			updateTips(name + ' cannot be empty.');
+			return false;
+		}
+		if(/^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(element.val())){
+			return true;
+		}
+			element.addClass('ui-state-error');
+			updateTips('Invalid Image url entered.');
+			return false;
 	}
 	function checkTopics(element, topics){
 
@@ -54,6 +74,7 @@ $(function() {
 				allFields.removeClass('ui-state-error');
 				bValid = bValid && checkWordLength(contents, 'Contents', 100, 2000);
 				bValid = bValid && checkWordLength(title, 'Title', 2, 100);
+				bValid = bValid && isValidUrl(url);
 				if(type == "column"){
 					bValid = bValid && checkTopics($('#topic'), columnTopics);
 				}
@@ -75,7 +96,7 @@ $(function() {
 	});
 
 	$('#add-article').click(function() {
-		$('#add-new-form').attr('action', '/admin/addArticle');
+		$('#add-new-form').attr('action', getBaseUrl() + '/addArticle');
 		$('#rating-field').attr("disabled", true);
 		$('#rating-field').hide();
 		$('#topic-field').attr("disabled", true);
@@ -87,7 +108,7 @@ $(function() {
 	
 	$('#add-column').click(function() {
 		type = "column";
-		$('#add-new-form').attr('action', '/admin/addColumn');
+		$('#add-new-form').attr('action',  getBaseUrl() + '/addColumn');
 		$('#topic-field').attr("disabled", false);
 		$('#topic').autocomplete({source: columnTopics});
 		$('#topic-field').show();
@@ -98,7 +119,7 @@ $(function() {
 	});
 	$('#add-review').click(function() {
 		type = "review";
-		$('#add-new-form').attr('action', '/admin/addReview');
+		$('#add-new-form').attr('action', getBaseUrl() + '/addReview');
 		$('#topic-field').attr("disabled", false);
 		$('#topic').autocomplete({source: reviewTopics});
 		$('#topic-field').show();

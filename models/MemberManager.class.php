@@ -37,10 +37,12 @@ class MemberManager extends DataManager {
 	 */
 	public function authenticateMember($id, $password) {
 		$result = $this -> query("SELECT `id`, `role` FROM `users` WHERE `id` = ? AND `password` = ?", array($id, $password));
-		if(count($result[0]) > 0){ 
-			$member = $this -> toSingleObject($this -> objMapper -> toMembers($result));
-			$member -> authenticate();
-			return $member;
+		if(count($result) > 0){
+			if(count($result[0]) > 0){ 
+				$member = $this -> toSingleObject($this -> objMapper -> toMembers($result));
+				$member -> authenticate();
+				return $member;
+			}
 		}
 		return false;
 	}

@@ -26,13 +26,13 @@
 		<?php require('SharedAddNewContentForm.php'); ?>
 		<h2>Create Content</h2>
 		<li>
-			<a href="admin/#" id="add-article"><span></span>Add Article</a>
+			<a href="<?php echo $_GET['path'] ;?>#" id="add-article"><span></span>Add Article</a>
 		</li>
 		<li>
-			<a href="admin/#" id="add-column" data-topics = '<?php echo $this -> viewBag['column-topics'] ?>'><span></span>Add Column</a>
+			<a href="<?php echo $_GET['path'] ;?>#" id="add-column" data-topics = '<?php echo $this -> viewBag['column-topics'] ?>'><span></span>Add Column</a>
 		</li>
 		<li>
-			<a href="admin/#" id="add-review" data-topics = '<?php echo $this -> viewBag['review-topics'] ?>'><span></span>Add Review</a>
+			<a href="<?php echo $_GET['path'] ;?>#" id="add-review" data-topics = '<?php echo $this -> viewBag['review-topics'] ?>'><span></span>Add Review</a>
 		</li>
 		<?php endif; ?>
 	</ul>

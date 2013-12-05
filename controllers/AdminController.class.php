@@ -72,7 +72,7 @@ class AdminController extends Controller {
 	 * 
 	 * @return void
 	 */
-	public function viewMembers(){
+	public function viewmembers(){
 		$this->viewBag['members'] = $this -> memberManager -> getAllMembers();
 		$this -> renderView();
 	}
