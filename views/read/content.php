@@ -5,12 +5,12 @@
     <?php if(get_class($this->viewBag['content']) == "Review"): ?>
     	<h2><?php echo $this->viewBag['content'] -> topic; ?></h2>
    		<div>
-   			<h3><?php echo $this->viewBag['content'] -> rating; ?></h3>
+   			<h3 id="rating"><span class="stars"><?php echo $this->viewBag['content'] -> rating; ?></span> </h3>
    		</div>
     <?php elseif (get_class($this->viewBag['content']) == "Column") :?>
     	<h2><?php echo $this->viewBag['content'] -> topic; ?></h2>
     <?php endif;?>
-    <img src="<?php echo $this->viewBag['content'] -> coverUrl?>" alt="Cover Image">
+    <img src="<?php echo $this->viewBag['content'] -> coverUrl?>" id="articleImage" alt="Cover Image">
   </header>
   <p><?php echo $this->viewBag['content'] -> body; ?></p>
   <footer style="text-align: right">

@@ -1,12 +1,3 @@
-$(document).ready(function() {
-	$(".previewImage").one("load", function() {
-		var height = $(this).css("height");
-		$(this).parent().css("height", height);
-		$(this).prev().css("max-width", ($(this).css("width").substring(0, $(this).css("width").length -2) - 10) + "px");
-	});
-	
-});
-
 $(function() {
 	var name = $("#name"), password = $("#password"), allFields = $([]).add(name).add(password), tips = $(".validateTips");
 
@@ -16,7 +7,13 @@ $(function() {
 			tips.removeClass("ui-state-highlight", 1500);
 		}, 500);
 	}
-
+	
+	$(".previewImage").one("load", function() {
+		var height = $(this).css("height");
+		$(this).parent().css("height", height);
+		$(this).prev().css("max-width", ($(this).css("width").substring(0, $(this).css("width").length -2) - 10) + "px");
+	});
+	
 	function checkLength(o, n, min, max) {
 		if (o.val().length > max || o.val().length < min) {
 			o.addClass("ui-state-error");

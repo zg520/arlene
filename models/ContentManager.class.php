@@ -213,7 +213,7 @@ abstract class ContentManager extends DataManager {
 	 */
 	protected function getRecommendedIds($top = 5, $skip = 0) {
 		$recommended = array();
-		$sql = "SELECT id FROM articles WHERE status = 'published' AND recommended = '1' LIMIT " . $skip . ", " . $top;
+		$sql = "SELECT id FROM articles INNER JOIN publishmetadata ON `articles`.`id` = `publishmetadata`.`article_id` WHERE status = 'published' AND recommended = '1' ORDER BY publishmetadata.published_date DESC LIMIT " . $skip . ", " . $top;
 		$result = $this -> query($sql);
 
 		return $result;
@@ -312,19 +312,24 @@ abstract class ContentManager extends DataManager {
 		$result = $this -> query($sql, $params);
 
 		$insertParams = array('id' => $id, 'userId' => $userId, 'vote' => $voteType);
-
-		if (count($result[0]) == 0) {
+		if (count($result) != 0) {
+			if (count($result[0]) == 0) {
+				$voteSql = "INSERT into `articlelikes` (`article_id`, `user_id`, `vote`) VALUES(:id, :userId, :vote)";
+				$this -> upsert($voteSql, $insertParams);
+				return true;
+			} else {
+				if ($result[0][0] == $voteType) {
+					return false;
+				}
+				$delete = "DELETE FROM `articlelikes` WHERE `article_id` = :id AND `user_id` = :userId";
+				$this -> upsert($delete, $params);
+				$insertSql = "INSERT into `articlelikes` (`article_id`, `user_id`, `vote`) VALUES(:id, :userId, :vote)";
+				$result = $this -> upsert($insertSql, $insertParams);
+				return true;
+			}
+		}else{
 			$voteSql = "INSERT into `articlelikes` (`article_id`, `user_id`, `vote`) VALUES(:id, :userId, :vote)";
 			$this -> upsert($voteSql, $insertParams);
-			return true;
-		} else {
-			if ($result[0][0] == $voteType) {
-				return false;
-			}
-			$delete = "DELETE FROM `articlelikes` WHERE `article_id` = :id AND `user_id` = :userId";
-			$this -> upsert($delete, $params);
-			$insertSql = "INSERT into `articlelikes` (`article_id`, `user_id`, `vote`) VALUES(:id, :userId, :vote)";
-			$result = $this -> upsert($insertSql, $insertParams);
 			return true;
 		}
 	}
