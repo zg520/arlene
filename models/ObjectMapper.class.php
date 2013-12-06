@@ -64,7 +64,7 @@ class ObjectMapper{
 	 * @var array
 	 */					
 	private $memberMapping = array(
-							'id'=> 'userId',
+							'id' => 'userId',
 							'user_id' => 'userId', 
 							'role'=> 'role');
 							
@@ -165,16 +165,16 @@ class ObjectMapper{
 		$objMapping = $this->{strtolower($class) . 'Mapping'};
 
 		$objs = array();
-		$values = array_values($objMapping);
+		$values = array_unique(array_values($objMapping));
 		for ($i = 0; $i < count($data); $i++) {
 			$className = ucfirst(strtolower($class));
-
 			$obj = new $className();
-			foreach ($values as $objValue) {
-				$res = array_search($objValue, $objMapping);
-				foreach (array($res) as $dbKey) {
+			foreach ($values as $mappingVal) {
+				$res = array_keys($objMapping, $mappingVal);
+				foreach ($res as $dbKey) {
 					if (isset($data[$i][$dbKey])){
 						$obj -> {$objMapping[$dbKey]} = $data[$i][$dbKey];
+						break;
 					}
 				}
 			}
