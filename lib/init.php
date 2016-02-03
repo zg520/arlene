@@ -2,13 +2,13 @@
 /** Indicates whether this is a development environment **/
 define('DEVELOPMENT_ENVIRONMENT', true);
 /** Defines the name of the default database. **/
-define('DB_NAME', "Y6187553IAPT");
+define('DB_NAME', "");
 /** Defines the default user name to connect to the db. **/
-define('DB_USER', "Y6187553WebMod");
+define('DB_USER', "");
 /** Defines the default user password to connect to the db. **/
-define('DB_PASSWORD', "RY3D7-dTXhhv");
+define('DB_PASSWORD', "");
 /** Defines the host name of the database. **/
-define('DB_HOST', "mysql-student.cs.york.ac.uk");
+define('DB_HOST', "");
 
 /** Require the common library once. **/
 require_once (ROOT . DS . 'lib' . DS . 'common.php');
